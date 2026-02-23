@@ -1,67 +1,54 @@
-import os
-import json
 import requests
-import hashlib
-import xml.etree.ElementTree as ET
+import json
+import os
 
-DATA_FOLDER = "data"
+# הגדרות (החלף את המפתח במפתח שלך מ-RapidAPI)
+RAPID_API_KEY = "YOUR_RAPIDAPI_KEY"
+LEAGUE_ID = 140  # ID של La Liga ב-API-Football
 
-def get_fallback_logo(team_name):
-    bg_colors = ["0D6EFD", "DC3545", "198754", "6610F2", "FD7E14", "000000"]
-    team_hash = hashlib.md5(team_name.encode()).hexdigest()
-    color_idx = int(team_hash, 16) % len(bg_colors)
-    safe_name = requests.utils.quote(team_name)
-    return f"https://ui-avatars.com/api/?name={safe_name}&background={bg_colors[color_idx]}&color=fff&size=200&bold=true"
+def fetch_la_liga_highlights():
+    """מושך תקצירים רק של הליגה הספרדית"""
+    url = "https://www.scorebat.com/video-api/v3/"
+    response = requests.get(url).json()
+    # סינון רק למשחקים מספרד
+    la_liga_matches = [m for m in response.get('response', []) if "SPAIN: La Liga" in m.get('competition', '')]
+    return la_liga_matches
 
-def fetch_news():
-    """מושך מבזקי חדשות מסקיי ספורטס"""
-    news_items = []
-    try:
-        r = requests.get("https://www.skysports.com/rss/12040", timeout=10)
-        root = ET.fromstring(r.content)
-        for item in root.findall('./channel/item')[:10]:
-            news_items.append(item.find('title').text)
-    except:
-        news_items = ["Live football updates available 24/7", "Check back for transfer news"]
-    return news_items
-
-def fetch_data():
-    if not os.path.exists(DATA_FOLDER):
-        os.makedirs(DATA_FOLDER)
-
-    try:
-        response = requests.get("https://www.scorebat.com/video-api/v3/").json()
-        raw_matches = response.get('response', [])
-    except:
-        raw_matches = []
-
-    # יצירת המבנה החדש שכולל את שתי הקטגוריות
-    organized_data = {
-        "highlights": {},
-        "news": fetch_news()
+def fetch_teams_and_squads():
+    """מושך מידע על כל הקבוצות והשחקנים בליגה"""
+    headers = {
+        "X-RapidAPI-Key": RAPID_API_KEY,
+        "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com"
     }
-
-    for item in raw_matches[:40]:
-        comp = item.get("competition", "International")
-        title = item.get("title", "")
-        teams = title.split(' - ') if " - " in title else [title, "Opponent"]
-        home_n, away_n = teams[0].strip(), teams[1].strip()
-
-        match_entry = {
-            "title": title,
-            "date": item.get("date"),
-            "embed_code": item.get("videos", [{}])[0].get("embed"),
-            "url": item.get("matchviewUrl"),
-            "home_team": {"name": home_n, "logo": get_fallback_logo(home_n)},
-            "away_team": {"name": away_n, "logo": get_fallback_logo(away_n)}
+    # משיכת רשימת הקבוצות
+    teams_url = f"https://api-football-v1.p.rapidapi.com/v3/teams?league={LEAGUE_ID}&season=2025"
+    teams_data = requests.get(teams_url, headers=headers).json().get('response', [])
+    
+    database = {}
+    for item in teams_data:
+        team = item['team']
+        venue = item['venue']
+        database[team['id']] = {
+            "name": team['name'],
+            "logo": team['logo'],
+            "founded": team['founded'],
+            "stadium": venue['name'],
+            "city": venue['city'],
+            "squad": [] # כאן ניתן להוסיף קריאה נוספת לשחקנים במידת הצורך
         }
-        if comp not in organized_data["highlights"]: 
-            organized_data["highlights"][comp] = []
-        organized_data["highlights"][comp].append(match_entry)
+    return database
 
-    with open(f"{DATA_FOLDER}/highlights.json", "w", encoding="utf-8") as f:
-        json.dump(organized_data, f, ensure_ascii=False, indent=4)
-    print("Data updated successfully.")
+def save_data():
+    if not os.path.exists("data"): os.makedirs("data")
+    
+    all_data = {
+        "highlights": fetch_la_liga_highlights(),
+        "teams": fetch_teams_and_squads()
+    }
+    
+    with open("data/laliga_db.json", "w", encoding="utf-8") as f:
+        json.dump(all_data, f, ensure_ascii=False, indent=4)
+    print("La Liga Database Updated!")
 
 if __name__ == "__main__":
-    fetch_data()
+    save_data()
