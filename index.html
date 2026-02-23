@@ -1,200 +1,295 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <meta name="google-site-verification" content="OrJ99zXpus_GMOqnEmZI1sJSos31nitrKKtMX8o49KM" />
 
-    <title>ספורט פלוס | תקצירי כדורגל ותוצאות חיות בזמן אמת</title>
-    <meta name="description" content="צפו בתקצירי הווידאו העדכניים ביותר מכל הליגות המובילות. תוצאות ספורט בזמן אמת, סיכומי משחקים ועדכונים שוטפים באתר ספורט פלוס.">
-    <meta name="keywords" content="כדורגל, תקצירים, תוצאות חיות, ליגת האלופות, תקצירי וידאו, ספורט, ליגה אנגלית, ליגה ספרדית">
+    <title id="meta-title">Sports Plus | Live Scores & Football Highlights</title>
+    <meta name="description" content="Watch the latest football highlights and get real-time scores from top leagues including Premier League, La Liga, and Champions League.">
     <link rel="canonical" href="https://almog787.github.io/sports-highlights-hub/" />
 
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://almog787.github.io/sports-highlights-hub/">
-    <meta property="og:title" content="ספורט פלוס - תקצירים ותוצאות חיות">
-    <meta property="og:description" content="כל תוצאות הספורט ותקצירי הווידאו במקום אחד.">
-    <meta property="og:image" content="https://almog787.github.io/sports-highlights-hub/data/og-image.jpg">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
-        body { background-color: #f4f6f9; font-family: system-ui, -apple-system, sans-serif; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .card { margin-bottom: 25px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-radius: 15px; overflow: hidden; transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); }
-        .nav-categories { overflow-x: auto; white-space: nowrap; padding: 10px 0; -webkit-overflow-scrolling: touch; }
-        .nav-categories::-webkit-scrollbar { display: none; }
-        .nav-categories button { margin-left: 8px; border-radius: 20px; padding: 5px 15px; }
-        .live-score-item { border-bottom: 1px solid #eee; padding: 12px 0; font-size: 0.95rem; }
-        .live-score-item:last-child { border-bottom: none; }
-        .pulse { animation: blinker 1.5s linear infinite; color: #ff4d4d; font-weight: bold; }
-        @keyframes blinker { 50% { opacity: 0; } }
-        .sticky-sidebar { position: -webkit-sticky; position: sticky; top: 20px; }
+        :root {
+            --primary-color: #0d6efd;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #1a1d20;
+            --text-muted: #6c757d;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0b0e11;
+            --card-bg: #15191c;
+            --text-main: #f8f9fa;
+            --text-muted: #a0a6ac;
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif; 
+            transition: all 0.3s ease;
+        }
+
+        /* Navbar Styling */
+        .navbar { background-color: #000 !important; padding: 1rem 0; }
+        .navbar-brand { font-weight: 800; letter-spacing: -1px; font-size: 1.5rem; }
+
+        /* Category Tabs */
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 3rem;
+            overflow-y: hidden;
+            background: var(--card-bg);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        .nav-link { 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            padding: 0.75rem 1.25rem;
+            border-bottom: 3px solid transparent;
+        }
+        .nav-link.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+
+        /* Video Cards */
+        .card { 
+            background: var(--card-bg);
+            border: none; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .card:hover { transform: translateY(-8px); }
+        .video-container { 
+            position: relative; 
+            padding-bottom: 56.25%; 
+            height: 0; 
+            background: #000;
+        }
+        .video-container iframe { position: absolute; width: 100%; height: 100%; border: 0; }
+        
+        /* Live Score Sidebar */
+        .live-score-card {
+            border-radius: 16px;
+            background: var(--card-bg);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .score-row {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .score-row:last-child { border-bottom: none; }
+        .live-badge {
+            background: #ff4d4d;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* Language Toggle */
+        .lang-switch .btn { color: white; border-color: #333; font-size: 0.8rem; }
     </style>
 </head>
-<body>
-    <nav class="navbar navbar-dark bg-dark mb-4 shadow">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="?" onclick="resetFilter(event)">🏆 ספורט פלוס</a>
+<body data-theme="light">
+
+    <nav class="navbar navbar-dark sticky-top">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand" href="#" id="brand-name">🏆 SPORTS PLUS</a>
+            
+            <div class="lang-switch d-flex gap-2">
+                <button class="btn btn-sm btn-outline-light" onclick="toggleLanguage('en')">EN</button>
+                <button class="btn btn-sm btn-outline-light" onclick="toggleLanguage('he')">עב</button>
+                <button class="btn btn-sm btn-outline-warning ms-2" onclick="toggleTheme()">🌓</button>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="mb-4 nav-categories" id="categories-container">
-            </div>
+    <div class="nav-scroller shadow-sm mb-4">
+        <nav class="nav container" id="categories-container">
+            </nav>
+    </div>
 
+    <main class="container">
         <div class="row">
             <div class="col-lg-8">
-                <h3 class="mb-4 fw-bold" id="current-category-title">התקצירים האחרונים</h3>
+                <h2 class="h4 fw-bold mb-4" id="section-title">Latest Highlights</h2>
                 <div id="highlights-container" class="row">
                     <div class="text-center py-5">
                         <div class="spinner-border text-primary" role="status"></div>
-                        <p class="mt-2 text-muted">טוען נתונים עבורך...</p>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-4">
-                <div class="card p-3 sticky-sidebar">
-                    <h4 class="mb-3 fw-bold"><span class="pulse">●</span> תוצאות חיות</h4>
-                    <div id="live-scores-container">
-                        <div class="text-center text-muted small py-3">מחפש משחקים פעילים...</div>
+                <div class="live-score-card p-4 sticky-top" style="top: 100px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0" id="live-title">Live Scores</h5>
+                        <span class="live-badge" id="live-label">LIVE</span>
                     </div>
+                    <div id="live-scores-container">
+                        </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
+        const i18n = {
+            en: {
+                brand: "🏆 SPORTS PLUS",
+                latest: "Latest Highlights",
+                live: "Live Scores",
+                loading: "Loading data...",
+                all: "All Leagues",
+                view: "Watch on ScoreBat",
+                dir: "ltr",
+                noMatches: "No live matches currently."
+            },
+            he: {
+                brand: "🏆 ספורט פלוס",
+                latest: "תקצירים אחרונים",
+                live: "תוצאות חיות",
+                loading: "טוען נתונים...",
+                all: "כל הליגות",
+                view: "צפייה ב-ScoreBat",
+                dir: "rtl",
+                noMatches: "אין משחקים פעילים כרגע."
+            }
+        };
+
+        let currentLang = 'en';
         let allHighlights = [];
 
-        async function initApp() {
-            await fetchCategories();
-            await fetchLiveScores();
-            await fetchHighlights();
-            applyFilterFromUrl();
+        function toggleTheme() {
+            const body = document.body;
+            const theme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', theme);
         }
 
-        async function fetchCategories() {
-            try {
-                const response = await fetch('data/categories.json');
-                const categories = await response.json();
-                const container = document.getElementById('categories-container');
-                container.innerHTML = `<button class="btn btn-primary btn-sm" onclick="filterBy('all')">הכל</button>`;
-                
-                categories.forEach(category => {
-                    const btn = document.createElement('button');
-                    btn.className = 'btn btn-outline-secondary btn-sm';
-                    btn.textContent = category;
-                    btn.onclick = () => filterBy(category);
-                    container.appendChild(btn);
-                });
-            } catch (error) { console.error('Categories error:', error); }
-        }
-
-        async function fetchHighlights() {
-            try {
-                const response = await fetch('data/sports_highlights.json');
-                allHighlights = await response.json();
-            } catch (error) {
-                document.getElementById('highlights-container').innerHTML = '<p class="text-danger text-center">שגיאה בטעינת התכנים.</p>';
-            }
-        }
-
-        async function fetchLiveScores() {
-            try {
-                const response = await fetch('data/live_scores.json');
-                const liveScores = await response.json();
-                const container = document.getElementById('live-scores-container');
-                
-                if (!liveScores || liveScores.length === 0) {
-                    container.innerHTML = '<p class="text-muted small text-center">אין משחקים פעילים כרגע.</p>';
-                    return;
-                }
-
-                container.innerHTML = '';
-                liveScores.slice(0, 12).forEach(match => {
-                    const home = match.teams?.home?.name || 'קבוצת בית';
-                    const away = match.teams?.away?.name || 'קבוצת חוץ';
-                    const homeScore = match.goals?.home ?? 0;
-                    const awayScore = match.goals?.away ?? 0;
-                    const time = match.fixture?.status?.elapsed || '';
-
-                    container.innerHTML += `
-                        <div class="live-score-item d-flex justify-content-between align-items-center">
-                            <span class="text-end" style="width: 40%">${home}</span>
-                            <span class="badge bg-light text-dark mx-2">${homeScore} - ${awayScore}</span>
-                            <span class="text-start" style="width: 40%">${away}</span>
-                            <span class="text-danger small fw-bold ms-1" style="width: 10%">${time}'</span>
-                        </div>
-                    `;
-                });
-            } catch (error) { console.error('Live scores error:', error); }
-        }
-
-        function filterBy(category) {
-            const url = new URL(window.location);
-            if (category === 'all') {
-                url.searchParams.delete('league');
-                document.getElementById('current-category-title').textContent = 'התקצירים האחרונים';
-            } else {
-                url.searchParams.set('league', category);
-                document.getElementById('current-category-title').textContent = category;
-            }
-            window.history.pushState({}, '', url);
-            renderHighlights(category);
-        }
-
-        function applyFilterFromUrl() {
-            const params = new URLSearchParams(window.location.search);
-            const league = params.get('league');
-            renderHighlights(league || 'all');
-            if(league) document.getElementById('current-category-title').textContent = league;
-        }
-
-        function resetFilter(event) {
-            event.preventDefault();
-            filterBy('all');
-        }
-
-        function renderHighlights(category) {
-            const container = document.getElementById('highlights-container');
-            container.innerHTML = '';
+        function toggleLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = i18n[lang].dir;
             
-            const filteredData = category === 'all' 
-                ? allHighlights 
-                : allHighlights.filter(item => item.competition === category);
+            // Update UI static text
+            document.getElementById('brand-name').textContent = i18n[lang].brand;
+            document.getElementById('section-title').textContent = i18n[lang].latest;
+            document.getElementById('live-title').textContent = i18n[lang].live;
+            document.getElementById('live-label').textContent = lang === 'he' ? 'חי' : 'LIVE';
+            
+            // Re-render dynamic parts
+            renderCategories();
+            renderHighlights('all');
+            fetchLiveScores();
+        }
 
-            if (filteredData.length === 0) {
-                container.innerHTML = '<div class="col-12 text-center py-5 text-muted">לא נמצאו תקצירים בקטגוריה זו.</div>';
-                return;
+        async function initApp() {
+            try {
+                const [catRes, highRes] = await Promise.all([
+                    fetch('data/categories.json'),
+                    fetch('data/sports_highlights.json')
+                ]);
+                
+                window.categories = await catRes.json();
+                allHighlights = await highRes.json();
+                
+                renderCategories();
+                renderHighlights('all');
+                fetchLiveScores();
+            } catch (e) {
+                console.error("Initialization failed", e);
             }
+        }
 
-            filteredData.forEach(item => {
-                const col = document.createElement('div');
-                col.className = 'col-md-12';
-                col.innerHTML = `
-                    <div class="card p-3">
-                        <div class="row align-items-center">
-                            <div class="col-md-7">
-                                <div class="video-container">${item.embed_code}</div>
-                            </div>
-                            <div class="col-md-5 mt-3 mt-md-0">
-                                <h5 class="fw-bold">${item.title}</h5>
-                                <p class="text-primary mb-1">${item.competition}</p>
-                                <p class="text-muted small">פורסם ב: ${new Date(item.date).toLocaleDateString('he-IL')}</p>
-                                <a href="${item.url || '#'}" target="_blank" class="btn btn-outline-dark btn-sm">צפייה ב-ScoreBat</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(col);
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            const allText = i18n[currentLang].all;
+            container.innerHTML = `<a class="nav-link active" href="#" onclick="filterBy('all', this)">${allText}</a>`;
+            
+            window.categories.forEach(cat => {
+                container.innerHTML += `<a class="nav-link" href="#" onclick="filterBy('${cat}', this)">${cat}</a>`;
             });
         }
 
-        window.addEventListener('popstate', applyFilterFromUrl);
+        async function fetchLiveScores() {
+            const container = document.getElementById('live-scores-container');
+            try {
+                const response = await fetch('data/live_scores.json');
+                const scores = await response.json();
+                
+                if (!scores || scores.length === 0) {
+                    container.innerHTML = `<p class="text-muted small text-center">${i18n[currentLang].noMatches}</p>`;
+                    return;
+                }
+
+                container.innerHTML = scores.slice(0, 10).map(match => `
+                    <div class="score-row">
+                        <span class="text-truncate" style="max-width: 80px;">${match.teams.home.name}</span>
+                        <span class="fw-bold mx-2">${match.goals.home} - ${match.goals.away}</span>
+                        <span class="text-truncate text-end" style="max-width: 80px;">${match.teams.away.name}</span>
+                        <small class="text-danger ms-2 fw-bold">${match.fixture.status.elapsed}'</small>
+                    </div>
+                `).join('');
+            } catch (e) {
+                container.innerHTML = "";
+            }
+        }
+
+        function filterBy(league, el) {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            el.classList.add('active');
+            renderHighlights(league);
+        }
+
+        function renderHighlights(league) {
+            const container = document.getElementById('highlights-container');
+            const data = league === 'all' ? allHighlights : allHighlights.filter(i => i.competition === league);
+            
+            container.innerHTML = data.map(item => `
+                <div class="col-12">
+                    <div class="card p-3">
+                        <div class="row g-4 align-items-center">
+                            <div class="col-md-7">
+                                <div class="video-container">
+                                    ${item.embed_code}
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <span class="badge bg-primary-subtle text-primary mb-2">${item.competition}</span>
+                                <h5 class="fw-bold mb-2">${item.title}</h5>
+                                <p class="text-muted small mb-3">${new Date(item.date).toLocaleDateString()}</p>
+                                <a href="${item.url || '#'}" target="_blank" class="btn btn-sm btn-dark w-100">${i18n[currentLang].view}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
         initApp();
     </script>
 </body>
