@@ -1,153 +1,53 @@
-<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WORLD FOOTBALL | פורטל התקצירים הבינלאומי</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <style>
-        :root { --primary: #e21a22; --dark: #121212; --gray-bg: #f4f4f4; }
-        body { font-family: 'Heebo', sans-serif; background-color: var(--gray-bg); color: #333; }
+import os
+import json
+import requests
+import hashlib
+
+DATA_FOLDER = "data"
+
+def get_fallback_logo(team_name):
+    """Generates a consistent colored logo based on team name"""
+    bg_colors = ["0D6EFD", "DC3545", "198754", "6610F2", "FD7E14", "000000"]
+    team_hash = hashlib.md5(team_name.encode()).hexdigest()
+    color_idx = int(team_hash, 16) % len(bg_colors)
+    safe_name = requests.utils.quote(team_name)
+    return f"https://ui-avatars.com/api/?name={safe_name}&background={bg_colors[color_idx]}&color=fff&size=200&bold=true"
+
+def fetch_data():
+    if not os.path.exists(DATA_FOLDER):
+        os.makedirs(DATA_FOLDER)
+
+    try:
+        response = requests.get("https://www.scorebat.com/video-api/v3/").json()
+        raw_matches = response.get('response', [])
+    except:
+        raw_matches = []
+
+    organized_data = {}
+    for item in raw_matches[:40]:
+        comp = item.get("competition", "International")
+        title = item.get("title", "")
         
-        /* Navbar */
-        .navbar { background: #000 !important; border-bottom: 4px solid var(--primary); padding: 15px 0; }
-        .navbar-brand { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 900; letter-spacing: 1px; }
+        teams = title.split(' - ') if " - " in title else [title, "Opponent"]
+        home_n = teams[0].strip()
+        away_n = teams[1].strip()
 
-        /* Hero Section */
-        .hero-banner { 
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=2000');
-            background-size: cover; background-position: center;
-            color: white; padding: 100px 0 60px; margin-bottom: 50px;
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        match_entry = {
+            "title": title,
+            "competition": comp,
+            "date": item.get("date"),
+            "embed_code": item.get("videos", [{}])[0].get("embed"),
+            "url": item.get("matchviewUrl"),
+            "home_team": {"name": home_n, "logo": get_fallback_logo(home_n)},
+            "away_team": {"name": away_n, "logo": get_fallback_logo(away_n)}
         }
 
-        /* League Blocks */
-        .league-block { margin-bottom: 60px; }
-        .league-header { 
-            display: flex; align-items: center; margin-bottom: 25px; 
-            border-right: 6px solid var(--primary); padding-right: 15px;
-        }
-        .league-header h2 { font-family: 'Oswald', sans-serif; font-weight: 700; margin: 0; text-transform: uppercase; }
+        if comp not in organized_data:
+            organized_data[comp] = []
+        organized_data[comp].append(match_entry)
 
-        /* Match Card */
-        .match-card { 
-            background: #fff; border: none; border-radius: 0; 
-            transition: 0.3s; height: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .match-card:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.15); }
-        
-        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
-        .video-wrapper iframe { position: absolute; width: 100%; height: 100%; top:0; left:0; }
+    with open(f"{DATA_FOLDER}/highlights.json", "w", encoding="utf-8") as f:
+        json.dump(organized_data, f, ensure_ascii=False, indent=4)
 
-        .card-body { padding: 20px; }
-        .team-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .team-box { text-align: center; width: 40%; }
-        .team-logo { width: 55px; height: 55px; object-fit: contain; margin-bottom: 8px; border-radius: 50%; padding: 4px; background: #fff; border: 1px solid #eee; }
-        .vs-divider { font-family: 'Oswald', sans-serif; color: var(--primary); font-weight: 900; font-size: 1.2rem; }
-
-        .btn-watch { border-radius: 0; font-weight: 700; background: var(--dark); border: none; color: white; transition: 0.3s; }
-        .btn-watch:hover { background: var(--primary); color: white; }
-    </style>
-</head>
-<body>
-
-<nav class="navbar navbar-dark sticky-top">
-    <div class="container">
-        <a class="navbar-brand" href="#"><span class="text-danger">WORLD</span> FOOTBALL</a>
-        <div class="text-white small d-none d-md-block">המוקד המרכזי לתקצירי הליגות המובילות</div>
-    </div>
-</nav>
-
-<div class="hero-banner">
-    <div class="container">
-        <h1 class="display-3 fw-black">MATCHDAY <span class="text-danger">RECAP</span></h1>
-        <p class="lead fs-4">כל השערים, כל הדרמות. הכיסוי המלא של הכדורגל העולמי במקום אחד.</p>
-    </div>
-</div>
-
-<div class="container">
-    <div id="leagues-container">
-        <div class="text-center py-5">
-            <div class="spinner-border text-danger" role="status"></div>
-            <p class="mt-2">טוען את נתוני הליגות...</p>
-        </div>
-    </div>
-</div>
-
-<footer class="bg-dark text-white py-4 mt-5">
-    <div class="container text-center">
-        <p class="mb-0">© 2026 World Football Highlights Portal | נתונים מסופקים ע"י ScoreBat API</p>
-    </div>
-</footer>
-
-<script>
-    async function loadData() {
-        try {
-            const response = await fetch('data/highlights.json');
-            const data = await response.json();
-            renderLeagues(data);
-        } catch (error) {
-            console.error("Error loading highlights:", error);
-            document.getElementById('leagues-container').innerHTML = `
-                <div class="alert alert-danger text-center">שגיאה בטעינת הנתונים. אנא ודא שהקובץ highlights.json קיים.</div>
-            `;
-        }
-    }
-
-    function renderLeagues(data) {
-        const container = document.getElementById('leagues-container');
-        container.innerHTML = '';
-
-        for (const [leagueName, matches] of Object.entries(data)) {
-            let leagueHtml = `
-                <div class="league-block">
-                    <div class="league-header">
-                        <h2>${leagueName}</h2>
-                    </div>
-                    <div class="row g-4">
-            `;
-
-            matches.forEach(match => {
-                leagueHtml += `
-                    <div class="col-md-6 col-lg-4">
-                        <div class="match-card card">
-                            <div class="video-wrapper">
-                                ${match.embed_code}
-                            </div>
-                            <div class="card-body">
-                                <div class="team-info">
-                                    <div class="team-box">
-                                        <img src="${match.home_team.logo}" class="team-logo" alt="${match.home_team.name}">
-                                        <div class="small fw-bold text-truncate">${match.home_team.name}</div>
-                                    </div>
-                                    <div class="vs-divider">VS</div>
-                                    <div class="team-box">
-                                        <img src="${match.away_team.logo}" class="team-logo" alt="${match.away_team.name}">
-                                        <div class="small fw-bold text-truncate">${match.away_team.name}</div>
-                                    </div>
-                                </div>
-                                <h5 class="card-title fw-bold h6 mt-3">${match.title}</h5>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <span class="text-muted small"><i class="bi bi-calendar3"></i> ${new Date(match.date).toLocaleDateString('he-IL')}</span>
-                                    <a href="${match.url}" target="_blank" class="btn btn-sm btn-watch">לכתבה המלאה</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            leagueHtml += `</div></div>`;
-            container.innerHTML += leagueHtml;
-        }
-    }
-
-    window.onload = loadData;
-</script>
-
-</body>
-</html>
+if __name__ == "__main__":
+    fetch_data()
