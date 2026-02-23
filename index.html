@@ -13,85 +13,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-3359114283161345">
     
-    <title>GNN | Global News Network | Live World Updates</title>
-    <meta name="description" content="Verified international news hub featuring real-time market data, breaking world headlines, and live video broadcasts.">
+    <title>GNN | Global News Network | High-Impact Reporting</title>
     
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "NewsMediaOrganization",
-      "name": "Global News Network",
-      "alternateName": "GNN",
-      "url": "https://almog787.github.io/highlights-hub/",
-      "logo": "https://via.placeholder.com/200x200?text=GNN",
-      "foundingDate": "2026",
-      "knowsAbout": ["World News", "Finance", "Technology", "Geopolitics"]
-    }
-    </script>
-
+    <meta name="description" content="Premium international news network providing real-time global coverage, financial data, and live broadcasting.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
     <style>
         :root { 
-            --gnn-navy: #002147; 
-            --gnn-red: #cc0000; 
-            --gnn-dark: #121212;
-            --gnn-gray: #f8f9fa;
+            --primary: #002147; 
+            --accent: #cc0000; 
+            --bg: #f0f2f5;
+            --glass: rgba(255, 255, 255, 0.95);
         }
 
         body { 
-            background-color: var(--gnn-gray);
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: #333;
+            background-color: var(--bg);
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            overflow-x: hidden;
         }
 
-        /* Navbar Style */
+        /* Modern Navbar */
         .navbar { 
-            background: var(--gnn-navy) !important; 
-            border-bottom: 4px solid var(--gnn-red);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: var(--primary) !important; 
+            border-bottom: 3px solid var(--accent);
+            padding: 1rem 0;
+            backdrop-filter: blur(10px);
+        }
+        .navbar-brand { font-weight: 800; letter-spacing: -1px; font-size: 1.8rem; }
+
+        /* Live Indicator */
+        .live-dot {
+            height: 10px; width: 10px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
         }
 
-        /* Container Styling */
-        .content-box {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            height: 100%;
-        }
-
-        .section-title {
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-left: 5px solid var(--gnn-red);
-            padding-left: 15px;
-            margin-bottom: 25px;
-        }
-
-        /* Video Responsive Fix */
-        .video-wrapper {
-            border-radius: 8px;
+        /* Dashboard Cards */
+        .card-custom {
+            background: var(--glass);
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            margin-bottom: 24px;
             overflow: hidden;
-            background: #000;
         }
+        .card-header-custom {
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .section-label {
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        .section-label i { color: var(--accent); margin-right: 10px; }
+
+        /* Video Wrapper */
+        .video-container { border-radius: 0 0 16px 16px; overflow: hidden; }
 
         /* Footer */
         footer {
-            background: var(--gnn-dark);
-            color: #888;
-            padding: 60px 0 30px;
-            margin-top: 50px;
+            background: #0a0a0a;
+            color: #777;
+            padding: 80px 0 40px;
+            margin-top: 60px;
         }
-        .builder-link {
-            color: #fff;
-            text-decoration: none;
+        .footer-logo { color: white; font-weight: 800; font-size: 1.5rem; margin-bottom: 20px; }
+        .credit-link { 
+            color: var(--accent); 
+            text-decoration: none; 
             font-weight: 600;
-            border-bottom: 1px solid var(--gnn-red);
+            transition: 0.3s;
         }
-        .builder-link:hover { color: var(--gnn-red); }
+        .credit-link:hover { color: white; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .navbar-brand { font-size: 1.4rem; }
+            .section-label { font-size: 0.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -105,20 +125,20 @@
       { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
       { "proName": "FX_IDC:USDILS", "title": "USD/ILS" },
       { "proName": "NASDAQ:AAPL", "title": "Apple" },
-      { "proName": "NASDAQ:TSLA", "title": "Tesla" }
+      { "proName": "NASDAQ:NVDA", "title": "NVIDIA" }
     ],
     "showSymbolLogo": true, "colorTheme": "light", "isTransparent": false, "displayMode": "adaptive", "locale": "en"
     }
     </script>
 </div>
 
-<nav class="navbar navbar-dark sticky-top p-3">
+<nav class="navbar navbar-dark sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
-        <a class="navbar-brand fw-bold fs-3" href="#">GNN<span class="text-danger">.</span></a>
-        <div class="d-none d-md-block text-white-50">
-            <i class="bi bi-broadcast text-danger"></i> LIVE BROADCAST CENTRE
+        <a class="navbar-brand" href="#">GNN<span class="text-danger">.</span>LIVE</a>
+        <div class="d-none d-md-flex align-items-center text-white-50 small">
+            <span class="live-dot"></span> BROADCASTING WORLDWIDE
         </div>
-        <div id="current-time" class="text-white small fw-light"></div>
+        <div id="clock" class="text-white fw-light small"></div>
     </div>
 </nav>
 
@@ -126,51 +146,63 @@
     <div class="row g-4">
         
         <div class="col-lg-8">
-            <div class="content-box">
-                <h4 class="section-title">Verified Headlines</h4>
-                <div class="tradingview-widget-container">
-                    <div class="tradingview-widget-container__widget"></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-                    {
-                    "feedMode": "all_symbols",
-                    "colorTheme": "light",
-                    "isTransparent": false,
-                    "displayMode": "regular",
-                    "width": "100%",
-                    "height": 800,
-                    "locale": "en"
-                    }
-                    </script>
+            <div class="card card-custom">
+                <div class="card-header-custom">
+                    <h2 class="section-label"><i class="bi bi-newspaper"></i> Verified Headlines</h2>
+                    <span class="badge bg-light text-dark border">Updated 1m ago</span>
+                </div>
+                <div class="p-0">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+                        {
+                        "feedMode": "all_symbols",
+                        "colorTheme": "light",
+                        "isTransparent": true,
+                        "displayMode": "regular",
+                        "width": "100%",
+                        "height": 850,
+                        "locale": "en"
+                        }
+                        </script>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-4">
-            <div class="content-box mb-4">
-                <h5 class="section-title">Global Stream</h5>
-                <div class="video-wrapper ratio ratio-16x9">
+            <div class="card card-custom">
+                <div class="card-header-custom">
+                    <h2 class="section-label"><i class="bi bi-play-circle-fill"></i> Global Stream</h2>
+                </div>
+                <div class="video-container ratio ratio-16x9">
                     <iframe src="https://www.youtube.com/embed/gCNeDWCI0vo?autoplay=1&mute=1" title="Live Stream" allowfullscreen></iframe>
                 </div>
-                <p class="small text-muted mt-3">
-                    <i class="bi bi-info-circle"></i> Real-time international video coverage from verified news bureaus.
-                </p>
             </div>
 
-            <div class="content-box">
-                <h5 class="section-title">Market Pulse</h5>
-                <div class="tradingview-widget-container">
-                    <div class="tradingview-widget-container__widget"></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-hotlists.js" async>
-                    {
-                    "colorTheme": "light",
-                    "dateRange": "12M",
-                    "exchange": "US",
-                    "showChart": true,
-                    "locale": "en",
-                    "width": "100%",
-                    "height": 450
-                    }
-                    </script>
+            <div class="card card-custom text-center py-3 bg-light border">
+                <span class="text-muted small">ADVERTISEMENT</span>
+                </div>
+
+            <div class="card card-custom">
+                <div class="card-header-custom">
+                    <h2 class="section-label"><i class="bi bi-graph-up-arrow"></i> Market Pulse</h2>
+                </div>
+                <div class="p-2">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-hotlists.js" async>
+                        {
+                        "colorTheme": "light",
+                        "dateRange": "12M",
+                        "exchange": "US",
+                        "showChart": true,
+                        "locale": "en",
+                        "width": "100%",
+                        "height": 500
+                        }
+                        </script>
+                    </div>
                 </div>
             </div>
         </div>
@@ -179,37 +211,39 @@
 </main>
 
 <footer>
-    <div class="container text-center">
-        <h4 class="text-white fw-bold mb-4">GLOBAL NEWS NETWORK</h4>
-        <div class="d-flex justify-content-center gap-4 mb-4" style="font-size: 1.5rem;">
-            <a href="#" class="text-secondary"><i class="bi bi-twitter-x"></i></a>
-            <a href="#" class="text-secondary"><i class="bi bi-youtube"></i></a>
-            <a href="#" class="text-secondary"><i class="bi bi-linkedin"></i></a>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <p class="small opacity-50">
-                    GNN provides decentralized, automated news aggregation. Content is sourced from global financial feeds and verified broadcasting agencies. 
-                </p>
-                <hr class="border-secondary opacity-25 my-4">
-                <p class="mb-1">© 2026 GNN International. All rights reserved.</p>
-                <p class="small">
-                    Architected by <a href="https://github.com/almog787" class="builder-link" target="_blank">Almog787</a>
-                </p>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-4 mb-md-0">
+                <div class="footer-logo">GLOBAL NEWS NETWORK</div>
+                <p class="small">High-impact reporting. Unbiased global coverage. 24/7 automated synchronization with world news bureaus.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <div class="social-links mb-3">
+                    <a href="#" class="text-white mx-2 fs-5"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="text-white mx-2 fs-5"><i class="bi bi-youtube"></i></a>
+                    <a href="#" class="text-white mx-2 fs-5"><i class="bi bi-github"></i></a>
+                </div>
+                <p class="small mb-0">© 2026 GNN International.</p>
+                <p class="small">Developed by <a href="https://github.com/almog787" class="credit-link" target="_blank">Almog787</a></p>
             </div>
         </div>
     </div>
 </footer>
 
 <script>
-    // Update live clock
-    function updateClock() {
+    // Live Clock Function
+    function updateTime() {
         const now = new Date();
-        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        document.getElementById('current-time').innerText = now.toLocaleDateString('en-US', options).toUpperCase();
+        const options = { 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit',
+            hour12: false
+        };
+        document.getElementById('clock').innerText = now.toLocaleTimeString('en-US', options);
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+    setInterval(updateTime, 1000);
+    updateTime();
 </script>
 
 </body>
