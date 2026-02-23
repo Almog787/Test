@@ -1,10 +1,9 @@
-
 name: Update Sports Infrastructure
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Increased frequency: runs every 30 minutes for live-ish data
-  workflow_dispatch:
+    - cron: '*/30 * * * *' # רץ כל 30 דקות לעדכון תוצאות חיות ותקצירים
+  workflow_dispatch: # מאפשר לך להריץ את האקשן ידנית לבדיקה
 
 jobs:
   build:
@@ -21,19 +20,28 @@ jobs:
           python-version: '3.10'
 
       - name: Install Dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install requests
 
-      - name: Run Scraper & Generator
+      - name: Run Scraper & Data Generator
         env:
-          # Optional: Add this secret in your GitHub Repo settings for live scores
+          # וודא שהגדרת את הסוד הזה ב-Settings של ה-Repo אם אתה משתמש ב-Live Scores
           LIVE_API_KEY: ${{ secrets.LIVE_SCORES_API_KEY }}
         run: python main.py
 
-      - name: Commit and Push Updates
+      - name: Run README Automation
+        # שלב זה מעדכן את הקובץ README.md עם הסטטיסטיקות החדשות
+        run: python update_readme.py
+
+      - name: Commit and Push All Updates
         run: |
           git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add data/*.json
-          git add sitemap.xml
-          git commit -m "Automated update: Content, Live Scores & Sitemap [$(date)]" || echo "No changes to commit"
+          git config --local user.name "GitHub Action Bot"
+          
+          # git add . מוודא שכל שינוי ב-data/, ב-README.md, ב-sitemap.xml וב-robots.txt ייכלל
+          git add .
+          
+          # הקומיט יתבצע רק אם יש שינוי בתוכן. אם אין שינוי, האקשן לא ייכשל
+          git commit -m "Automated Sync: Data, SEO & README [$(date)]" || echo "No changes to commit"
+          
           git push
