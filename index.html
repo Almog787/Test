@@ -3,58 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>חדשות ספורט וסיכומי וידאו</title>
+    <title>חדשות ספורט | תקצירים ותוצאות בזמן אמת</title>
+    <meta name="description" content="התקצירים והתוצאות החיות המעודכנים ביותר בעולם הכדורגל.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f8f9fa; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .card { margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        body { background-color: #f4f6f9; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .card { margin-bottom: 20px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 12px; }
+        .nav-categories { overflow-x: auto; white-space: nowrap; padding-bottom: 10px; }
+        .nav-categories button { margin-left: 10px; }
+        .live-score-item { border-bottom: 1px solid #eee; padding: 10px 0; font-size: 0.9rem; }
+        .live-score-item:last-child { border-bottom: none; }
+        .pulse { animation: blinker 1.5s linear infinite; color: red; font-weight: bold; }
+        @keyframes blinker { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-dark bg-dark mb-4 shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="#">מרכז סיכומי הספורט שלי</a>
+            <a class="navbar-brand fw-bold" href="?" onclick="resetFilter(event)">ספורט פלוס - תקצירים ותוצאות</a>
         </div>
     </nav>
 
     <div class="container">
-        <div id="highlights-container" class="row">
-            <div class="text-center">טוען את התוצאות האחרונות...</div>
+        <div class="mb-4 nav-categories" id="categories-container">
+            </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <h3 class="mb-3" id="current-category-title">כל התקצירים</h3>
+                <div id="highlights-container" class="row">
+                    <div class="text-center text-muted">טוען נתונים...</div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card p-3 sticky-top" style="top: 20px;">
+                    <h4 class="mb-3"><span class="pulse">●</span> תוצאות חיות</h4>
+                    <div id="live-scores-container">
+                        <div class="text-center text-muted small">טוען תוצאות...</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        async function loadHighlights() {
-            try {
-                const response = await fetch('data/sports_highlights.json');
-                const data = await response.json();
-                const container = document.getElementById('highlights-container');
-                container.innerHTML = '';
+        let allHighlights = [];
 
-                data.forEach(item => {
-                    const col = document.createElement('div');
-                    col.className = 'col-md-6 col-lg-4';
-                    col.innerHTML = `
-                        <div class="card">
-                            <img src="${item.thumbnail}" class="card-img-top" alt="${item.title}">
-                            <div class="card-body">
-                                <h5 class="card-title">${item.title}</h5>
-                                <p class="card-text text-muted">${item.competition}</p>
-                                <div class="video-container mb-2">${item.embed_code}</div>
-                                <small class="text-secondary">תאריך: ${new Date(item.date).toLocaleDateString('he-IL')}</small>
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(col);
+        async function initApp() {
+            await fetchCategories();
+            await fetchLiveScores();
+            await fetchHighlights();
+            applyFilterFromUrl();
+        }
+
+        async function fetchCategories() {
+            try {
+                const response = await fetch('data/categories.json');
+                const categories = await response.json();
+                const container = document.getElementById('categories-container');
+                container.innerHTML = `<button class="btn btn-outline-primary btn-sm active" onclick="filterBy('all')">הכל</button>`;
+                
+                categories.forEach(category => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn btn-outline-secondary btn-sm';
+                    btn.textContent = category;
+                    btn.onclick = () => filterBy(category);
+                    container.appendChild(btn);
                 });
             } catch (error) {
-                console.error('Error fetching data:', error);
-                document.getElementById('highlights-container').innerHTML = '<p class="text-danger text-center">שגיאה בטעינת הנתונים.</p>';
+                console.error('Failed to load categories:', error);
             }
         }
-        loadHighlights();
+
+        async function fetchHighlights() {
+            try {
+                const response = await fetch('data/sports_highlights.json');
+                allHighlights = await response.json();
+            } catch (error) {
+                console.error('Failed to load highlights:', error);
+                document.getElementById('highlights-container').innerHTML = '<p class="text-danger text-center">שגיאה בטעינת התקצירים.</p>';
+            }
+        }
+
+        async function fetchLiveScores() {
+            try {
+                const response = await fetch('data/live_scores.json');
+                const liveScores = await response.json();
+                const container = document.getElementById('live-scores-container');
+                
+                if (liveScores.length === 0) {
+                    container.innerHTML = '<p class="text-muted small">אין משחקים חיים כרגע או חסר חיבור ל-API.</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                // Simplistic rendering based on standard api-football structure
+                liveScores.slice(0, 10).forEach(match => {
+                    const home = match.teams?.home?.name || 'Home';
+                    const away = match.teams?.away?.name || 'Away';
+                    const homeScore = match.goals?.home ?? '-';
+                    const awayScore = match.goals?.away ?? '-';
+                    const time = match.fixture?.status?.elapsed || '';
+
+                    container.innerHTML += `
+                        <div class="live-score-item d-flex justify-content-between">
+                            <span>${home} <strong class="ms-2">${homeScore}</strong></span>
+                            <span class="text-danger small">${time}'</span>
+                            <span><strong class="me-2">${awayScore}</strong> ${away}</span>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error('Failed to load live scores:', error);
+            }
+        }
+
+        function filterBy(category) {
+            // Update URL for SEO and sharing without reloading the page
+            const url = new URL(window.location);
+            if (category === 'all') {
+                url.searchParams.delete('league');
+                document.getElementById('current-category-title').textContent = 'כל התקצירים';
+            } else {
+                url.searchParams.set('league', category);
+                document.getElementById('current-category-title').textContent = `תקצירים: ${category}`;
+            }
+            window.history.pushState({}, '', url);
+            renderHighlights(category);
+        }
+
+        function applyFilterFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const league = params.get('league');
+            if (league) {
+                document.getElementById('current-category-title').textContent = `תקצירים: ${league}`;
+                renderHighlights(league);
+            } else {
+                renderHighlights('all');
+            }
+        }
+
+        function resetFilter(event) {
+            event.preventDefault();
+            filterBy('all');
+        }
+
+        function renderHighlights(category) {
+            const container = document.getElementById('highlights-container');
+            container.innerHTML = '';
+            
+            const filteredData = category === 'all' 
+                ? allHighlights 
+                : allHighlights.filter(item => item.competition === category);
+
+            if (filteredData.length === 0) {
+                container.innerHTML = '<p class="text-muted">לא נמצאו תקצירים לקטגוריה זו.</p>';
+                return;
+            }
+
+            filteredData.forEach(item => {
+                const col = document.createElement('div');
+                col.className = 'col-md-12 col-lg-6';
+                col.innerHTML = `
+                    <div class="card p-2">
+                        <div class="video-container mb-2">${item.embed_code}</div>
+                        <div class="card-body p-1">
+                            <h6 class="card-title fw-bold mb-1">${item.title}</h6>
+                            <p class="card-text text-muted small mb-1">${item.competition}</p>
+                            <small class="text-secondary">עודכן: ${new Date(item.date).toLocaleDateString('he-IL')}</small>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        }
+
+        // Handle browser back/forward buttons correctly
+        window.addEventListener('popstate', applyFilterFromUrl);
+
+        // Start the application
+        initApp();
     </script>
 </body>
 </html>
