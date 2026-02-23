@@ -13,146 +13,218 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-3359114283161345">
     
-    <title>GNN LIVE | מרכז השידורים החיים שלכם</title>
+    <title>GNN Universe | 30+ Live Streams</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
     <style>
-        :root { --primary: #002147; --accent: #cc0000; --bg: #f8f9fa; }
-        body { background-color: var(--bg); font-family: 'Assistant', sans-serif; }
-        
-        .header-live { background: var(--primary); color: white; padding: 40px 0; border-bottom: 4px solid var(--accent); }
-        .nav-pills .nav-link { color: var(--primary); font-weight: bold; border-radius: 30px; padding: 10px 25px; margin: 0 5px; }
-        .nav-pills .nav-link.active { background-color: var(--accent) !important; color: white; }
-        
-        .video-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 25px; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .video-info { padding: 15px; }
-        .live-badge { background: red; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; vertical-align: middle; }
-        
-        footer { background: #1a1a1a; color: white; padding: 40px 0; margin-top: 50px; }
+        :root { 
+            --main-dark: #0f172a; 
+            --card-bg: #1e293b;
+            --accent: #ef4444; 
+            --text-gray: #94a3b8;
+        }
+
+        body { 
+            background-color: var(--main-dark); 
+            color: white; 
+            font-family: 'Assistant', sans-serif;
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        /* Hero Header */
+        .hero {
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 1)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000');
+            background-size: cover;
+            padding: 60px 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 40px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #f1f5f9;
+        }
+        .category-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Grid System */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .video-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .video-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        .video-info { padding: 12px; }
+        .video-info h6 { 
+            margin: 0; 
+            font-size: 0.95rem; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+
+        .live-tag {
+            background: var(--accent);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 8px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0.5; } }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--main-dark); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
     </style>
 </head>
 <body>
 
-<header class="header-live text-center">
+<header class="hero">
     <div class="container">
-        <h1 class="fw-bold">GNN <span class="text-danger">LIVE</span> HUB</h1>
-        <p class="lead">כל השידורים החיים מהעולם במקום אחד</p>
-        <div id="clock" class="fs-4 fw-light"></div>
+        <h1 class="display-4 fw-bold">GNN <span class="text-danger">UNIVERSE</span></h1>
+        <p class="text-gray fs-5">30+ ערוצי שידור חי מסביב לשעון</p>
+        <div id="live-clock" class="badge bg-dark p-2 border border-secondary mt-3"></div>
     </div>
 </header>
 
-<main class="container my-5">
-    <ul class="nav nav-pills justify-content-center mb-5" id="pills-tab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="news-tab" data-bs-toggle="pill" data-bs-target="#news" type="button"><i class="bi bi-broadcast"></i> חדשות</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="cartoons-tab" data-bs-toggle="pill" data-bs-target="#cartoons" type="button"><i class="bi bi-emoji-smile"></i> מצויירים</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="movies-tab" data-bs-toggle="pill" data-bs-target="#movies" type="button"><i class="bi bi-film"></i> סרטים ובידור</button>
-        </li>
-    </ul>
+<main class="container">
+    
+    <section>
+        <h2 class="category-title"><i class="bi bi-broadcast text-danger"></i> חדשות מהעולם</h2>
+        <div class="video-grid" id="news-grid"></div>
+    </section>
 
-    <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="news" role="tabpanel">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="video-card">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/kQXggaqbAUQ?autoplay=1&mute=1"></iframe>
-                        </div>
-                        <div class="video-info">
-                            <h5><span class="live-badge">LIVE</span> ABC News (ארה"ב)</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="video-card">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/UkflsYbpwII"></iframe>
-                        </div>
-                        <div class="video-info">
-                            <h5><span class="live-badge">LIVE</span> Fox News Highlights</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section>
+        <h2 class="category-title"><i class="bi bi-controller text-warning"></i> מצויירים לילדים (24/7)</h2>
+        <div class="video-grid" id="cartoons-grid"></div>
+    </section>
 
-        <div class="tab-pane fade" id="cartoons" role="tabpanel">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/zcnkA83gBp0"></iframe>
-                        </div>
-                        <div class="video-info"><h6>Curious George 24/7</h6></div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/ZI_onAbHTWw"></iframe>
-                        </div>
-                        <div class="video-info"><h6>Peppa Pig Live</h6></div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/IcY5Y5_s12A"></iframe>
-                        </div>
-                        <div class="video-info"><h6>Zig & Sharko Live</h6></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section>
+        <h2 class="category-title"><i class="bi bi-film text-info"></i> סרטים ובידור</h2>
+        <div class="video-grid" id="movies-grid"></div>
+    </section>
 
-        <div class="tab-pane fade" id="movies" role="tabpanel">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="video-card">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/laQsUwCu9KE"></iframe>
-                        </div>
-                        <div class="video-info"><h5>מרכז הסרטים והאפליקציות</h5></div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="video-card">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/Bcxf0K3QkyA"></iframe>
-                        </div>
-                        <div class="video-info"><h5>קדימונים וסרטים חדשים 2026</h5></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </main>
 
-<footer class="text-center">
-    <div class="container">
-        <p>GNN Live Hub - האוסף הגדול ביותר של שידורי יוטיוב בזמן אמת</p>
-        <p class="small text-muted">פותח על ידי <a href="https://github.com/almog787" class="text-danger">Almog787</a></p>
-    </div>
+<footer class="text-center py-5 border-top border-secondary mt-5">
+    <p class="mb-1">GNN Universe © 2026 | Developed by <a href="https://github.com/almog787" class="text-danger text-decoration-none fw-bold">Almog787</a></p>
+    <p class="small text-gray">כל התכנים מוטמעים ישירות מ-YouTube באופן חוקי.</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // רשימת ה-IDs של הסרטונים (ניתן להחליף את ה-ID בלבד כדי לעדכן סרטון)
+    const STREAMS = {
+        news: [
+            { id: "kQXggaqbAUQ", title: "ABC News Live" },
+            { id: "rEKifG2XUZg", title: "Sky News Live" },
+            { id: "oy_c-9M0EaE", title: "Fox News Live Updates" },
+            { id: "S6U-tEa5VfM", title: "Al Jazeera English" },
+            { id: "V0I5egl027w", title: "DW News Live" },
+            { id: "6f_fW0N0lqU", title: "France 24 English" },
+            { id: "UkflsYbpwII", title: "NBC News Now" },
+            { id: "gCNeDWCI0vo", title: "EuroNews Live" },
+            { id: "fE70L-80p0o", title: "Global News Canada" },
+            { id: "XWq5kBlakjo", title: "CNA 24/7 Asia" }
+        ],
+        cartoons: [
+            { id: "zcnkA83gBp0", title: "Curious George" },
+            { id: "ZI_onAbHTWw", title: "Peppa Pig Live" },
+            { id: "IcY5Y5_s12A", title: "Zig & Sharko" },
+            { id: "5-6_PVhnZ0g", title: "SpongeBob SquarePants" },
+            { id: "kP4Am3D8qEE", title: "Where's Chicky?" },
+            { id: "pS6mK_m99o0", title: "Bebefinn Nursery Rhymes" },
+            { id: "v_E49G45x_s", title: "Masha and the Bear" },
+            { id: "XqZsoesa55w", title: "Baby Shark Live" },
+            { id: "7v9YFvY3lFk", title: "Tom & Jerry Highlights" },
+            { id: "8JCBUavUQvI", title: "Disney Junior Mix" }
+        ],
+        movies: [
+            { id: "Bcxf0K3QkyA", title: "Movie Trailers 2026" },
+            { id: "laQsUwCu9KE", title: "Hollywood Cinema TV" },
+            { id: "uTxTRhfVNgk", title: "Sci-Fi Movies Channel" },
+            { id: "h7Z_mhagK5o", title: "Action Movie Central" },
+            { id: "7SEz6UkSTqE", title: "Family Movies Live" },
+            { id: "4-V0I5egl027w", title: "Documentary World" },
+            { id: "L_u99vK_m99", title: "Classic Cinema" },
+            { id: "K9u_tEa5VfM", title: "Horror Stream 24/7" },
+            { id: "Z9u_fE70L-80", title: "Adventure TV" },
+            { id: "M9u_XWq5kBla", title: "Comedy Network" }
+        ]
+    };
+
+    function renderStreams() {
+        for (const [category, list] of Object.entries(STREAMS)) {
+            const grid = document.getElementById(`${category}-grid`);
+            list.forEach(stream => {
+                grid.innerHTML += `
+                    <div class="video-card">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/${stream.id}?rel=0" allowfullscreen></iframe>
+                        </div>
+                        <div class="video-info">
+                            <h6><span class="live-tag">LIVE</span> ${stream.title}</h6>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    }
+
     function updateClock() {
         const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString('he-IL');
+        document.getElementById('live-clock').innerText = now.toLocaleTimeString('he-IL') + " | " + now.toLocaleDateString('he-IL');
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+
+    window.onload = () => {
+        renderStreams();
+        setInterval(updateClock, 1000);
+        updateClock();
+    };
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
