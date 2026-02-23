@@ -1,0 +1,43 @@
+name: Generate README
+on:
+  push:
+    branches:
+      - main  # ירוץ בכל פעם שתעלה קוד לענף הראשי
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Generate README File
+        run: |
+          echo "# 🌍 Global News Network (GNN)" > README.md
+          echo "" >> README.md
+          echo "## 📊 Automated Site Status" >> README.md
+          echo "* **Last Updated:** $(date -u)" >> README.md
+          echo "* **Status:** Active 🟢" >> README.md
+          echo "* **Main Language:** English (EN)" >> README.md
+          echo "" >> README.md
+          echo "## 🚀 Project Overview" >> README.md
+          echo "This is a real-time international news hub. It uses automated feeds to fetch global headlines without a backend." >> README.md
+          echo "" >> README.md
+          echo "### 🛠 Tech Stack" >> README.md
+          echo "- **Framework:** Bootstrap 5" >> README.md
+          echo "- **Tracking:** Google Analytics (G-8NEMWLX7BF)" >> README.md
+          echo "- **SEO:** Google News Schema Integrated" >> README.md
+          echo "" >> README.md
+          echo "## 📈 Google Integration" >> README.md
+          echo "The site is optimized for Google News and Discover. Ensure \`sitemap.xml\` is updated in the Search Console." >> README.md
+          echo "" >> README.md
+          echo "---" >> README.md
+          echo "*Generated automatically by GitHub Actions*" >> README.md
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "docs: automated README update" || exit 0
+          git push
