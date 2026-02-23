@@ -1,53 +1,133 @@
-import os
-import json
-import requests
-import hashlib
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta name="google-adsense-account" content="ca-pub-3359114283161345">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NEMWLX7BF"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date()); gtag('config', 'G-8NEMWLX7BF');
+    </script>
 
-DATA_FOLDER = "data"
-
-def get_fallback_logo(team_name):
-    """Generates a consistent colored logo based on team name"""
-    bg_colors = ["0D6EFD", "DC3545", "198754", "6610F2", "FD7E14", "000000"]
-    team_hash = hashlib.md5(team_name.encode()).hexdigest()
-    color_idx = int(team_hash, 16) % len(bg_colors)
-    safe_name = requests.utils.quote(team_name)
-    return f"https://ui-avatars.com/api/?name={safe_name}&background={bg_colors[color_idx]}&color=fff&size=200&bold=true"
-
-def fetch_data():
-    if not os.path.exists(DATA_FOLDER):
-        os.makedirs(DATA_FOLDER)
-
-    try:
-        response = requests.get("https://www.scorebat.com/video-api/v3/").json()
-        raw_matches = response.get('response', [])
-    except:
-        raw_matches = []
-
-    organized_data = {}
-    for item in raw_matches[:40]:
-        comp = item.get("competition", "International")
-        title = item.get("title", "")
-        
-        teams = title.split(' - ') if " - " in title else [title, "Opponent"]
-        home_n = teams[0].strip()
-        away_n = teams[1].strip()
-
-        match_entry = {
-            "title": title,
-            "competition": comp,
-            "date": item.get("date"),
-            "embed_code": item.get("videos", [{}])[0].get("embed"),
-            "url": item.get("matchviewUrl"),
-            "home_team": {"name": home_n, "logo": get_fallback_logo(home_n)},
-            "away_team": {"name": away_n, "logo": get_fallback_logo(away_n)}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="OrJ99zXpus_GMOqnEmZI1sJSos31nitrKKtMX8o49KM" />
+    <title>WORLD FOOTBALL | Premium Highlights Portal</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root { --primary: #e21a22; --dark: #0a0a0a; --card-bg: #ffffff; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; color: #1a1a1a; }
+        .navbar { background: var(--dark) !important; border-bottom: 3px solid var(--primary); padding: 1rem 0; }
+        .navbar-brand { font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: 700; }
+        .hero-banner { 
+            background: linear-gradient(45deg, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=2000');
+            background-size: cover; background-position: center; color: white; padding: 80px 0; margin-bottom: 40px;
         }
+        .league-title { 
+            font-family: 'Oswald', sans-serif; border-left: 5px solid var(--primary); 
+            padding-left: 15px; margin-bottom: 30px; text-transform: uppercase; 
+        }
+        [dir="rtl"] .league-title { border-left: 0; border-right: 5px solid var(--primary); padding-left: 0; padding-right: 15px; }
+        .match-card { border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; height: 100%; background: var(--card-bg); }
+        .match-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
+        .video-wrapper iframe { position: absolute; width: 100%; height: 100%; top:0; left:0; }
+        .team-logo { width: 50px; height: 50px; object-fit: contain; border-radius: 50%; border: 1px solid #eee; background: #fff; padding: 3px; }
+        .vs-badge { font-family: 'Oswald', sans-serif; color: var(--primary); font-weight: 700; }
+    </style>
+</head>
+<body>
 
-        if comp not in organized_data:
-            organized_data[comp] = []
-        organized_data[comp].append(match_entry)
+<nav class="navbar navbar-dark sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" href="#"><span class="text-danger">WORLD</span> FOOTBALL</a>
+        <div class="lang-switch d-flex gap-2">
+            <button class="btn btn-outline-light btn-sm" onclick="setLanguage('en')">EN</button>
+            <button class="btn btn-outline-light btn-sm" onclick="setLanguage('he')">עברית</button>
+        </div>
+    </div>
+</nav>
 
-    with open(f"{DATA_FOLDER}/highlights.json", "w", encoding="utf-8") as f:
-        json.dump(organized_data, f, ensure_ascii=False, indent=4)
+<div class="hero-banner">
+    <div class="container text-start" id="hero-content">
+        <h1 class="display-4 fw-black" id="hero-title">MATCHDAY HIGHLIGHTS</h1>
+        <p class="lead fs-5" id="hero-desc">Your ultimate destination for global football goals and coverage.</p>
+    </div>
+</div>
 
-if __name__ == "__main__":
-    fetch_data()
+<div class="container">
+    <div id="leagues-container"></div>
+</div>
+
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center small opacity-75" id="footer-text">
+        © 2026 World Football Portal. All rights reserved. Video data by ScoreBat API.
+    </div>
+</footer>
+
+<script>
+    const translations = {
+        en: { dir: "ltr", heroTitle: "MATCHDAY HIGHLIGHTS", heroDesc: "Your ultimate destination for global football goals and coverage.", footer: "© 2026 World Football Portal. All rights reserved. Video data by ScoreBat API.", watchBtn: "Full Coverage" },
+        he: { dir: "rtl", heroTitle: "תקצירי המשחקים", heroDesc: "היעד המרכזי שלך לשערים וכיסוי כדורגל עולמי.", footer: "© 2026 פורטל הכדורגל העולמי. כל הזכויות שמורות. נתוני וידאו: ScoreBat API.", watchBtn: "לכתבה המלאה" }
+    };
+
+    let currentData = {};
+
+    async function setLanguage(lang) {
+        const t = translations[lang];
+        document.documentElement.lang = lang;
+        document.documentElement.dir = t.dir;
+        document.getElementById('hero-title').innerText = t.heroTitle;
+        document.getElementById('hero-desc').innerText = t.heroDesc;
+        document.getElementById('footer-text').innerText = t.footer;
+        document.getElementById('hero-content').className = lang === 'he' ? 'container text-end' : 'container text-start';
+        renderContent(lang);
+    }
+
+    async function init() {
+        try {
+            const response = await fetch('data/highlights.json');
+            currentData = await response.json();
+            setLanguage('en'); 
+        } catch (e) { document.getElementById('leagues-container').innerHTML = "Error loading data."; }
+    }
+
+    function renderContent(lang) {
+        const container = document.getElementById('leagues-container');
+        const btnText = translations[lang].watchBtn;
+        container.innerHTML = '';
+        for (const [league, matches] of Object.entries(currentData)) {
+            let html = `<div class="mb-5"><h2 class="league-title h4">${league}</h2><div class="row g-4">`;
+            matches.forEach(m => {
+                html += `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="match-card card">
+                            <div class="video-wrapper">${m.embed_code}</div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3 text-center">
+                                    <div style="width:40%"><img src="${m.home_team.logo}" class="team-logo mb-2"><div class="small fw-bold text-truncate">${m.home_team.name}</div></div>
+                                    <div class="vs-badge">VS</div>
+                                    <div style="width:40%"><img src="${m.away_team.logo}" class="team-logo mb-2"><div class="small fw-bold text-truncate">${m.away_team.name}</div></div>
+                                </div>
+                                <h6 class="fw-bold mb-3">${m.title}</h6>
+                                <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                                    <span class="small text-muted"><i class="bi bi-clock"></i> ${new Date(m.date).toLocaleDateString()}</span>
+                                    <a href="${m.url}" target="_blank" class="btn btn-outline-danger btn-sm px-3">${btnText}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+            html += `</div></div>`;
+            container.innerHTML += html;
+        }
+    }
+    init();
+</script>
+</body>
+</html>
