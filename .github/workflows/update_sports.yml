@@ -1,4 +1,4 @@
-name: Update Sports Highlights
+name: Generate Static Sports Site
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -20,15 +20,18 @@ jobs:
           python-version: '3.10'
 
       - name: Install Dependencies
-        run: pip install requests
+        run: pip install -r requirements.txt
 
-      - name: Run Scraper
+      - name: Run Static Site Generator
+        env:
+          # Fail-safe: If secret doesn't exist, it passes empty string
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
         run: python main.py
 
-      - name: Commit and Push Updates
+      - name: Commit and Push Built Pages
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/sports_highlights.json
-          git commit -m "Update sports highlights: $(date)" || echo "No changes to commit"
+          git add docs/
+          git commit -m "Auto-build static site and sitemap: $(date)" || echo "No changes to commit"
           git push
