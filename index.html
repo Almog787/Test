@@ -5,154 +5,62 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-8NEMWLX7BF');
+      gtag('js', new Date()); gtag('config', 'G-8NEMWLX7BF');
     </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="OrJ99zXpus_GMOqnEmZI1sJSos31nitrKKtMX8o49KM" />
 
-    <title id="meta-title">Sports Plus | Live Scores & Football Highlights</title>
-    <meta name="description" content="Watch the latest football highlights and get real-time scores from top leagues.">
-    <link rel="canonical" href="https://almog787.github.io/sports-highlights-hub/" />
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <title>Sports Plus | Global Football Highlights & Live Scores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --primary-color: #0d6efd;
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #1a1d20;
-            --text-muted: #6c757d;
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #0b0e11;
-            --card-bg: #15191c;
-            --text-main: #f8f9fa;
-            --text-muted: #a0a6ac;
-        }
-
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif; 
-            transition: all 0.3s ease;
-        }
-
-        .navbar { background-color: #000 !important; padding: 1rem 0; }
-        .navbar-brand { font-weight: 800; letter-spacing: -1px; font-size: 1.5rem; }
-
-        .nav-scroller {
-            position: relative;
-            z-index: 2;
-            height: 3rem;
-            overflow-y: hidden;
-            background: var(--card-bg);
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-        .nav-scroller .nav {
-            display: flex;
-            flex-wrap: nowrap;
-            padding-bottom: 1rem;
-            margin-top: -1px;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-        .nav-link { 
-            color: var(--text-muted); 
-            font-weight: 600; 
-            padding: 0.75rem 1.25rem;
-            border-bottom: 3px solid transparent;
-            text-decoration: none;
-        }
-        .nav-link.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
-
-        .card { 
-            background: var(--card-bg);
-            border: none; 
-            border-radius: 16px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        .card:hover { transform: translateY(-8px); }
-        .video-container { 
-            position: relative; 
-            padding-bottom: 56.25%; 
-            height: 0; 
-            background: #000;
-        }
-        .video-container iframe { position: absolute; width: 100%; height: 100%; border: 0; }
+        :root { --bg: #f4f7f6; --card: #ffffff; --text: #1a1a1a; --accent: #0d6efd; }
+        [data-theme="dark"] { --bg: #0f1113; --card: #1a1d21; --text: #e9ecef; --accent: #3d8bfd; }
         
-        .live-score-card {
-            border-radius: 16px;
-            background: var(--card-bg);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .score-row {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .score-row:last-child { border-bottom: none; }
-        .live-badge {
-            background: #ff4d4d;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            animation: pulse 1.5s infinite;
-        }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; transition: 0.3s; }
+        .navbar { background: #000; border-bottom: 2px solid var(--accent); }
+        .card { background: var(--card); border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
+        .video-container iframe { position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: 0; }
+        .team-logo { width: 45px; height: 45px; object-fit: contain; }
+        .nav-scroller { white-space: nowrap; overflow-x: auto; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .nav-link { color: var(--text); font-weight: 600; cursor: pointer; opacity: 0.7; }
+        .nav-link.active { opacity: 1; color: var(--accent); border-bottom: 2px solid var(--accent); }
+        .live-badge { background: #ff4757; color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.7rem; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
-        .lang-switch .btn { color: white; border-color: #333; font-size: 0.8rem; }
     </style>
 </head>
 <body data-theme="light">
 
     <nav class="navbar navbar-dark sticky-top">
         <div class="container d-flex justify-content-between">
-            <a class="navbar-brand" href="#" id="brand-name">🏆 SPORTS PLUS</a>
-            
-            <div class="lang-switch d-flex gap-2">
-                <button class="btn btn-sm btn-outline-light" onclick="toggleLanguage('en')">EN</button>
-                <button class="btn btn-sm btn-outline-light" onclick="toggleLanguage('he')">עב</button>
-                <button class="btn btn-sm btn-outline-warning ms-2" onclick="toggleTheme()">🌓</button>
+            <a class="navbar-brand fw-black" href="#" id="brand-text">🏆 SPORTS PLUS</a>
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-light" onclick="setLang('en')">EN</button>
+                <button class="btn btn-sm btn-outline-light" onclick="setLang('he')">עב</button>
+                <button class="btn btn-sm btn-outline-warning" onclick="toggleTheme()">🌓</button>
             </div>
         </div>
     </nav>
 
-    <div class="nav-scroller shadow-sm mb-4">
-        <nav class="nav container" id="categories-container"></nav>
-    </div>
+    <div class="nav-scroller container mb-4" id="cat-nav"></div>
 
     <main class="container">
         <div class="row">
             <div class="col-lg-8">
-                <h2 class="h4 fw-bold mb-4" id="section-title">Latest Highlights</h2>
-                <div id="highlights-container" class="row">
-                    <div class="text-center py-5">
-                        <div class="spinner-border text-primary" role="status"></div>
-                    </div>
-                </div>
+                <h3 class="fw-bold mb-4" id="main-title">Latest Highlights</h3>
+                <div id="highlights-feed"></div>
             </div>
-
             <div class="col-lg-4">
-                <div class="live-score-card p-4 sticky-top" style="top: 100px;">
+                <div class="card p-4 sticky-top" style="top: 90px;">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-bold mb-0" id="live-title">Live Scores</h5>
-                        <span class="live-badge" id="live-label">LIVE</span>
+                        <span class="live-badge">LIVE</span>
                     </div>
-                    <div id="live-scores-container"></div>
+                    <div id="live-feed"></div>
                 </div>
             </div>
         </div>
@@ -160,114 +68,80 @@
 
     <script>
         const i18n = {
-            en: {
-                brand: "🏆 SPORTS PLUS",
-                latest: "Latest Highlights",
-                live: "Live Scores",
-                all: "All Leagues",
-                view: "Watch Video",
-                dir: "ltr",
-                noMatches: "No live matches."
-            },
-            he: {
-                brand: "🏆 ספורט פלוס",
-                latest: "תקצירים אחרונים",
-                live: "תוצאות חיות",
-                all: "כל הליגות",
-                view: "צפייה בתקציר",
-                dir: "rtl",
-                noMatches: "אין משחקים פעילים."
-            }
+            en: { latest: "Latest Highlights", live: "Live Scores", view: "Watch", dir: "ltr", all: "All" },
+            he: { latest: "תקצירים אחרונים", live: "תוצאות חיות", view: "צפייה", dir: "rtl", all: "הכל" }
         };
-
         let currentLang = 'en';
-        let allHighlights = [];
+        let data = [];
 
         function toggleTheme() {
-            const body = document.body;
-            const theme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-            body.setAttribute('data-theme', theme);
+            document.body.dataset.theme = document.body.dataset.theme === 'light' ? 'dark' : 'light';
         }
 
-        function toggleLanguage(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            document.documentElement.dir = i18n[lang].dir;
-            document.getElementById('brand-name').textContent = i18n[lang].brand;
-            document.getElementById('section-title').textContent = i18n[lang].latest;
-            document.getElementById('live-title').textContent = i18n[lang].live;
-            document.getElementById('live-label').textContent = lang === 'he' ? 'חי' : 'LIVE';
-            renderCategories();
-            renderHighlights('all');
+        function setLang(l) {
+            currentLang = l;
+            document.documentElement.dir = i18n[l].dir;
+            document.getElementById('main-title').textContent = i18n[l].latest;
+            document.getElementById('live-title').textContent = i18n[l].live;
+            renderAll();
         }
 
-        async function initApp() {
-            try {
-                const [catRes, highRes, scoreRes] = await Promise.all([
-                    fetch('data/categories.json'),
-                    fetch('data/sports_highlights.json'),
-                    fetch('data/live_scores.json')
-                ]);
-                
-                window.categories = await catRes.json();
-                allHighlights = await highRes.json();
-                window.liveScores = await scoreRes.json();
-                
-                renderCategories();
-                renderHighlights('all');
-                renderLiveScores();
-            } catch (e) { console.error(e); }
+        async function init() {
+            const [h, c, l] = await Promise.all([
+                fetch('data/sports_highlights.json').then(r => r.json()),
+                fetch('data/categories.json').then(r => r.json()),
+                fetch('data/live_scores.json').then(r => r.json())
+            ]);
+            window.fullData = h;
+            window.cats = c;
+            window.lives = l;
+            renderAll();
         }
 
-        function renderCategories() {
-            const container = document.getElementById('categories-container');
-            container.innerHTML = `<a class="nav-link active" href="#" onclick="filterBy('all', this)">${i18n[currentLang].all}</a>`;
-            window.categories.forEach(cat => {
-                container.innerHTML += `<a class="nav-link" href="#" onclick="filterBy('${cat}', this)">${cat}</a>`;
+        function renderAll() {
+            // Categories
+            const catCont = document.getElementById('cat-nav');
+            catCont.innerHTML = `<span class="nav-link d-inline-block me-3 active" onclick="filter('all')">${i18n[currentLang].all}</span>`;
+            window.cats.forEach(c => {
+                catCont.innerHTML += `<span class="nav-link d-inline-block me-3" onclick="filter('${c}')">${c}</span>`;
             });
-        }
 
-        function renderLiveScores() {
-            const container = document.getElementById('live-scores-container');
-            const scores = window.liveScores || [];
-            if (!scores.length) {
-                container.innerHTML = `<p class="text-muted small text-center">${i18n[currentLang].noMatches}</p>`;
-                return;
-            }
-            container.innerHTML = scores.slice(0, 10).map(m => `
-                <div class="score-row">
-                    <span>${m.teams.home.name}</span>
+            // Live Scores
+            const liveCont = document.getElementById('live-feed');
+            liveCont.innerHTML = window.lives.slice(0,8).map(m => `
+                <div class="py-2 border-bottom d-flex justify-content-between small">
+                    <span class="text-truncate" style="width:70px">${m.teams.home.name}</span>
                     <span class="fw-bold">${m.goals.home} - ${m.goals.away}</span>
-                    <span>${m.teams.away.name}</span>
-                </div>`).join('');
+                    <span class="text-truncate text-end" style="width:70px">${m.teams.away.name}</span>
+                </div>
+            `).join('') || "No live matches.";
+
+            filter('all');
         }
 
-        function filterBy(league, el) {
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            el.classList.add('active');
-            renderHighlights(league);
-        }
-
-        function renderHighlights(league) {
-            const container = document.getElementById('highlights-container');
-            const data = league === 'all' ? allHighlights : allHighlights.filter(i => i.competition === league);
-            container.innerHTML = data.map(i => `
-                <div class="col-12">
-                    <div class="card p-3">
-                        <div class="row g-4">
-                            <div class="col-md-7"><div class="video-container">${i.embed_code}</div></div>
-                            <div class="col-md-5">
-                                <span class="badge bg-primary-subtle text-primary mb-2">${i.competition}</span>
-                                <h5>${i.title}</h5>
-                                <p class="text-muted small">${new Date(i.date).toLocaleDateString()}</p>
-                                <button class="btn btn-dark w-100 btn-sm">${i18n[currentLang].view}</button>
+        function filter(c) {
+            const feed = document.getElementById('highlights-feed');
+            const filtered = c === 'all' ? window.fullData : window.fullData.filter(i => i.competition === c);
+            
+            feed.innerHTML = filtered.map(i => `
+                <div class="card p-3 mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-7"><div class="video-container">${i.embed_code}</div></div>
+                        <div class="col-md-5">
+                            <div class="d-flex justify-content-around align-items-center mb-3 text-center">
+                                <div><img src="${i.home_team.logo}" class="team-logo"><div class="small mt-1">${i.home_team.name}</div></div>
+                                <div class="fw-bold">VS</div>
+                                <div><img src="${i.away_team.logo}" class="team-logo"><div class="small mt-1">${i.away_team.name}</div></div>
                             </div>
+                            <span class="badge bg-primary-subtle text-primary mb-2">${i.competition}</span>
+                            <h6 class="fw-bold mb-3">${i.title}</h6>
+                            <a href="${i.url}" target="_blank" class="btn btn-dark btn-sm w-100">${i18n[currentLang].view}</a>
                         </div>
                     </div>
-                </div>`).join('');
+                </div>
+            `).join('');
         }
-
-        initApp();
+        init();
     </script>
 </body>
 </html>
