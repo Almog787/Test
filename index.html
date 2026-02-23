@@ -13,22 +13,26 @@
     
     <style>
         :root { --primary: #e21a22; --dark: #0a0a0a; }
-        body { font-family: 'Inter', sans-serif; background: #f8f9fa; margin: 0; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; margin: 0; overflow-x: hidden; }
         .navbar { background: var(--dark) !important; border-bottom: 3px solid var(--primary); }
         
-        /* Ticker Style */
-        .news-ticker { background: #fff; border-bottom: 2px solid var(--primary); padding: 12px 0; overflow: hidden; }
-        .ticker-wrapper { display: flex; white-space: nowrap; }
-        .ticker-content { display: inline-block; animation: ticker 40s linear infinite; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-150%); } }
-        .news-item { font-weight: 800; margin: 0 40px; color: #111; text-transform: uppercase; font-size: 0.9rem; }
+        /* Ticker Animation */
+        .news-ticker { background: #fff; border-bottom: 2px solid var(--primary); padding: 12px 0; overflow: hidden; position: relative; }
+        .ticker-wrapper { display: flex; width: 100%; }
+        .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 60s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .news-item { font-weight: 800; margin: 0 50px; color: #111; text-transform: uppercase; font-size: 0.85rem; }
 
-        .hero-banner { background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=2000'); background-size: cover; padding: 60px 0; color: white; text-align: center; }
-        .match-card { border: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); height: 100%; transition: 0.3s; background: #fff; }
+        .hero-banner { background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=2000'); background-size: cover; padding: 50px 0; color: white; text-align: center; }
+        .match-card { border: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); height: 100%; transition: 0.3s; background: #fff; overflow: hidden; }
         .match-card:hover { transform: translateY(-7px); }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; border-radius: 15px 15px 0 0; overflow: hidden; }
-        .video-container iframe { position: absolute; width: 100%; height: 100%; top:0; left:0; }
-        .team-logo { width: 45px; height: 45px; object-fit: contain; }
+        .video-container { width: 100%; background: #000; }
+        /* תיקון גובה הסרטון שמוטמע מה-JSON */
+        .video-container div { margin-bottom: 0 !important; }
+        
+        .team-logo { width: 40px; height: 40px; object-fit: contain; border-radius: 50%; }
+        .league-title { font-weight: 800; margin-bottom: 1.5rem; border-left: 5px solid var(--primary); padding-left: 15px; color: var(--dark); }
+        [dir="rtl"] .league-title { border-left: 0; border-right: 5px solid var(--primary); padding-left: 0; padding-right: 15px; }
     </style>
 </head>
 <body>
@@ -37,36 +41,40 @@
     <div class="container d-flex justify-content-between">
         <a class="navbar-brand fw-bold" href="#">WORLD <span class="text-danger">FOOTBALL</span></a>
         <div>
-            <button class="btn btn-outline-light btn-sm fw-bold" onclick="setLanguage('en')">EN</button>
+            <button class="btn btn-outline-light btn-sm fw-bold me-1" onclick="setLanguage('en')">EN</button>
             <button class="btn btn-outline-light btn-sm fw-bold" onclick="setLanguage('he')">עברית</button>
         </div>
     </div>
 </nav>
 
 <div class="news-ticker shadow-sm">
-    <div class="container d-flex align-items-center">
-        <span class="badge bg-danger me-3 z-3">LATEST</span>
-        <div id="news-container" class="ticker-content"></div>
+    <div class="d-flex align-items-center">
+        <span class="badge bg-danger ms-3 me-3 z-3 shadow">LATEST NEWS</span>
+        <div id="news-container" class="ticker-content text-uppercase">
+            Loading news...
+        </div>
     </div>
 </div>
 
 <div class="hero-banner mb-5">
     <div class="container">
-        <h1 id="hero-title" class="display-4 fw-bold">FOOTBALL WORLD HUB</h1>
-        <p id="hero-desc" class="lead">All Goals, News & Transfers in One Place.</p>
+        <h1 id="hero-title" class="display-5 fw-bold">FOOTBALL HUB</h1>
+        <p id="hero-desc" class="lead opacity-75">Your daily dose of goals and updates.</p>
     </div>
 </div>
 
-<div class="container">
+<div class="container pb-5">
     <div id="leagues-container">
         <div class="text-center py-5">
             <div class="spinner-border text-danger" role="status"></div>
+            <p class="mt-2">Fetching matches...</p>
         </div>
     </div>
 </div>
 
 <script>
-    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+    // PWA Support
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 
     const translations = {
         en: { dir: "ltr", heroTitle: "FOOTBALL WORLD HUB", heroDesc: "All Goals, News & Transfers in One Place.", watchBtn: "Full Match Info" },
@@ -75,7 +83,7 @@
 
     let fullData = { highlights: {}, news: [] };
 
-    async function setLanguage(lang) {
+    function setLanguage(lang) {
         const t = translations[lang];
         document.documentElement.dir = t.dir;
         document.getElementById('hero-title').innerText = t.heroTitle;
@@ -84,17 +92,31 @@
     }
 
     async function init() {
-        try {
-            const r = await fetch('data/highlights.json');
-            fullData = await r.json();
-            
+        const paths = ['highlights.json', 'data/highlights.json', './data/highlights.json'];
+        let success = false;
+
+        for (let path of paths) {
+            try {
+                const r = await fetch(path);
+                if (r.ok) {
+                    fullData = await r.json();
+                    success = true;
+                    break;
+                }
+            } catch (e) { continue; }
+        }
+
+        if (success) {
             // טעינת מבזקים
-            const newsHtml = fullData.news.map(n => `<span class="news-item">${n}</span>`).join('');
-            document.getElementById('news-container').innerHTML = newsHtml + newsHtml; // כפול בשביל אפקט הלופ
-            
+            if (fullData.news && fullData.news.length > 0) {
+                document.getElementById('news-container').innerHTML = fullData.news
+                    .map(n => `<span class="news-item">${n}</span>`)
+                    .join('');
+            }
             setLanguage('en');
-        } catch(e) {
-            document.getElementById('leagues-container').innerHTML = '<div class="alert alert-danger">Failed to load data. Please run the Python script.</div>';
+        } else {
+            document.getElementById('leagues-container').innerHTML = 
+                `<div class="alert alert-danger text-center">Data file not found. Ensure highlights.json is uploaded.</div>`;
         }
     }
 
@@ -109,20 +131,25 @@
         }
 
         for (const [league, matches] of Object.entries(fullData.highlights)) {
-            let html = `<div class="mb-5"><h3 class="fw-bold mb-4 border-start border-danger border-4 ps-3">${league}</h3><div class="row g-4">`;
+            let html = `<div class="mb-5"><h3 class="league-title h4">${league}</h3><div class="row g-4">`;
             matches.forEach(m => {
                 html += `
                     <div class="col-md-6 col-lg-4">
                         <div class="match-card card">
                             <div class="video-container">${m.embed_code}</div>
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div class="text-center" style="width:40%"><img src="${m.home_team.logo}" class="team-logo mb-1"><div class="small fw-bold">${m.home_team.name}</div></div>
-                                    <div class="fw-bold text-danger">VS</div>
-                                    <div class="text-center" style="width:40%"><img src="${m.away_team.logo}" class="team-logo mb-1"><div class="small fw-bold">${m.away_team.name}</div></div>
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3 text-center">
+                                    <div style="width:40%">
+                                        <img src="${m.home_team.logo}" class="team-logo mb-1" onerror="this.src='https://via.placeholder.com/40'">
+                                        <div class="small fw-bold text-truncate">${m.home_team.name}</div>
+                                    </div>
+                                    <div class="fw-bold text-danger small">VS</div>
+                                    <div style="width:40%">
+                                        <img src="${m.away_team.logo}" class="team-logo mb-1" onerror="this.src='https://via.placeholder.com/40'">
+                                        <div class="small fw-bold text-truncate">${m.away_team.name}</div>
+                                    </div>
                                 </div>
-                                <h6 class="fw-bold small text-center mb-3">${m.title}</h6>
-                                <a href="${m.url}" target="_blank" class="btn btn-dark btn-sm w-100 py-2 fw-bold">${btnText}</a>
+                                <a href="${m.url}" target="_blank" class="btn btn-dark btn-sm w-100 py-2 fw-bold text-uppercase" style="font-size:0.7rem">${btnText}</a>
                             </div>
                         </div>
                     </div>`;
@@ -131,6 +158,7 @@
             container.innerHTML += html;
         }
     }
+
     init();
 </script>
 </body>
