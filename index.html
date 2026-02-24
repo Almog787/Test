@@ -5,211 +5,67 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-8NEMWLX7BF');
+      gtag('js', new Date()); gtag('config', 'G-8NEMWLX7BF');
     </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-3359114283161345">
     
-    <title>GNN GLOBAL | Live Stream Universe</title>
+    <title>Toon Universe | 24/7 Cartoon Live Streams</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
     <style>
-        :root { 
-            --bg-deep: #020617; 
-            --card-glass: rgba(30, 41, 59, 0.7);
-            --accent-red: #f43f5e; 
-            --neon-blue: #38bdf8;
-        }
-
-        body { 
-            background-color: var(--bg-deep); 
-            color: #f8fafc; 
-            font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Glassmorphism Header */
-        .glass-nav {
-            background: rgba(2, 6, 23, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 15px 0;
-        }
-
-        .hero-section {
-            padding: 100px 0 60px;
-            background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.1), transparent),
-                        radial-gradient(circle at top left, rgba(244, 63, 94, 0.1), transparent);
-            text-align: center;
-        }
-
-        /* Video Grid Layout */
-        .stream-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-
-        .stream-card {
-            background: var(--card-glass);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .stream-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: var(--neon-blue);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        .iframe-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            background: #000;
-        }
-
-        .iframe-container iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            border: none;
-        }
-
-        .stream-info { padding: 20px; }
-        .stream-info h6 { 
-            font-weight: 700; 
-            font-size: 1rem;
-            margin-bottom: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .live-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--accent-red);
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .dot { height: 8px; width: 8px; background: var(--accent-red); border-radius: 50%; animation: pulse 1.5s infinite; }
-
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
-
-        .category-header {
-            font-size: 2rem;
-            font-weight: 900;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .category-header i { color: var(--neon-blue); }
-
-        footer {
-            padding: 80px 0 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3);
-        }
+        :root { --bg: #020617; --card: #1e293b; --yellow: #fbbf24; }
+        body { background-color: var(--bg); color: white; font-family: 'Outfit', sans-serif; }
+        .hero { padding: 60px 0; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .stream-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; padding: 40px 0; }
+        .stream-card { background: var(--card); border-radius: 20px; overflow: hidden; border: 2px solid transparent; transition: 0.3s; }
+        .stream-card:hover { transform: translateY(-10px); border-color: var(--yellow); }
+        .video-box { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .info { padding: 15px; }
+        .live-tag { color: #ff4757; font-size: 0.7rem; font-weight: 900; }
     </style>
 </head>
 <body>
 
-<nav class="glass-nav sticky-top">
-    <div class="container d-flex justify-content-between align-items-center">
-        <a class="navbar-brand fw-bold fs-3 text-white" href="#">GNN<span style="color:var(--neon-blue)">.GLOBAL</span></a>
-        <div id="utc-clock" class="small fw-bold opacity-75"></div>
-    </div>
-</nav>
-
-<header class="hero-section">
+<header class="hero">
     <div class="container">
-        <h1 class="display-3 fw-black mb-3">Live Streaming Universe</h1>
-        <p class="lead opacity-50">Curated real-time broadcasts from across the planet.</p>
+        <h1 class="display-3 fw-black text-warning">TOON UNIVERSE</h1>
+        <p class="lead opacity-75">Your 24/7 Portal for the Best Live Cartoons</p>
     </div>
 </header>
 
 <main class="container">
-    <section>
-        <h2 class="category-header"><i class="bi bi-globe-americas"></i> World News</h2>
-        <div class="stream-grid" id="news-grid"></div>
-    </section>
-
-    <section>
-        <h2 class="category-header"><i class="bi bi-robot"></i> Kids & Animation</h2>
-        <div class="stream-grid" id="cartoons-grid"></div>
-    </section>
-
-    <section>
-        <h2 class="category-header"><i class="bi bi-film"></i> Movies & Entertainment</h2>
-        <div class="stream-grid" id="movies-grid"></div>
-    </section>
+    <div class="stream-grid" id="cartoon-grid">
+        </div>
 </main>
 
-<footer class="text-center">
-    <div class="container">
-        <h4 class="mb-4">GNN INTERNATIONAL</h4>
-        <p class="opacity-50 small">Automatic stream aggregation powered by GNN Scraper Bot.</p>
-        <div class="my-4">
-            <a href="#" class="text-white mx-2 fs-4"><i class="bi bi-twitter-x"></i></a>
-            <a href="#" class="text-white mx-2 fs-4"><i class="bi bi-github"></i></a>
-        </div>
-        <p class="mt-5 mb-0">&copy; 2026 GNN Universe | Developed by <a href="https://github.com/almog787" class="text-info text-decoration-none fw-bold">Almog787</a></p>
-    </div>
-</footer>
-
 <script>
-    async function loadStreams() {
+    async function fetchStreams() {
         try {
-            const response = await fetch('streams.json');
-            const data = await response.json();
+            const res = await fetch('streams.json');
+            const data = await res.json();
+            const grid = document.getElementById('cartoon-grid');
             
-            ['news', 'cartoons', 'movies'].forEach(category => {
-                const grid = document.getElementById(`${category}-grid`);
-                grid.innerHTML = '';
-                
-                data[category].forEach(stream => {
-                    grid.innerHTML += `
-                        <div class="stream-card">
-                            <div class="iframe-container">
-                                <iframe src="${stream.url}?autoplay=0&mute=1&rel=0" allowfullscreen loading="lazy"></iframe>
-                            </div>
-                            <div class="stream-info">
-                                <div class="live-status"><span class="dot"></span>Live Now</div>
-                                <h6 title="${stream.title}">${stream.title}</h6>
-                            </div>
+            data.cartoons.forEach(s => {
+                grid.innerHTML += `
+                    <div class="stream-card">
+                        <div class="video-box">
+                            <iframe src="${s.url}?rel=0&mute=1" allowfullscreen loading="lazy"></iframe>
                         </div>
-                    `;
-                });
+                        <div class="info">
+                            <span class="live-tag">● LIVE STREAM</span>
+                            <h6 class="mt-1 fw-bold text-truncate">${s.title}</h6>
+                        </div>
+                    </div>`;
             });
-        } catch (e) {
-            console.error("Streams JSON not found. Running bot recommended.");
-        }
+        } catch (e) { console.error("Loading error..."); }
     }
-
-    function updateClock() {
-        const now = new Date();
-        document.getElementById('utc-clock').innerText = now.toUTCString();
-    }
-
-    setInterval(updateClock, 1000);
-    window.onload = loadStreams;
+    window.onload = fetchStreams;
 </script>
-
 </body>
 </html>
