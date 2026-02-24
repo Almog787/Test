@@ -17,7 +17,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>דשבורד גננות | המרכז המוזיקלי</title>
+    <title>דשבורד גננות | המרכז המוזיקלי המאוחד</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;500;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -49,7 +49,6 @@
             display: inline-flex; align-items: center; gap: 8px;
         }
 
-        /* עיצוב כפתורים לפי קטגוריות */
         .btn-manual { color: var(--manual-color); border: 1px solid var(--manual-color); }
         .btn-manual.active { background: var(--manual-color); color: white; }
         .btn-birthday { color: var(--birthday-color); border: 1px solid var(--birthday-color); }
@@ -68,30 +67,24 @@
         .btn-story.active { background: var(--story-color); color: white; }
 
         .search-container { max-width: 500px; margin: 20px auto 0; padding: 0 15px; }
-        .search-input {
-            border-radius: 25px; padding: 10px 20px; border: 2px solid #ddd;
-            width: 100%; outline: none; transition: 0.3s; text-align: center;
-        }
+        .search-input { border-radius: 25px; padding: 10px 20px; border: 2px solid #ddd; width: 100%; text-align: center; outline: none; }
 
         .stream-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px 0; }
         .stream-grid.active { display: grid; }
 
-        .video-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 4px solid #ccc; transition: transform 0.2s; }
-        .video-card:hover { transform: translateY(-5px); }
+        .video-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 4px solid #ccc; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; background-color: #000; cursor: pointer; }
-        .video-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
-        .video-title { padding: 12px; font-weight: 600; font-size: 0.95rem; height: 65px; overflow: hidden; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .video-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .video-title { padding: 12px; font-weight: 600; font-size: 0.95rem; height: 65px; display: flex; align-items: center; justify-content: center; text-align: center; }
 
-        header { background: white; border-bottom: 1px solid #eee; }
         footer { background: white; padding: 20px 0; margin-top: auto; border-top: 1px solid #eee; text-align: center; }
         #current-time-container { font-size: 0.9rem; line-height: 1.2; text-align: left; }
-        
         iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     </style>
 </head>
 <body>
 
-<header class="py-3">
+<header class="bg-white py-3 border-bottom">
     <div class="container d-flex justify-content-between align-items-center">
         <h2 class="m-0 fw-800 text-primary"><i class="bi bi-music-note-beamed"></i> דשבורד גננות</h2>
         <div id="current-time-container" class="badge bg-light text-dark p-2 border">
@@ -116,7 +109,7 @@
 </nav>
 
 <div class="search-container">
-    <input type="text" id="songSearch" class="search-input" placeholder="חפשי שיר ברשימה..." onkeyup="filterSongs()">
+    <input type="text" id="songSearch" class="search-input" placeholder="חפשי שיר..." onkeyup="filterSongs()">
 </div>
 
 <main class="container py-4">
@@ -136,7 +129,6 @@
 </footer>
 
 <script>
-    // מעבר בין קטגוריות
     function switchCat(id, btn) {
         document.querySelectorAll('.stream-grid').forEach(g => g.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -145,10 +137,8 @@
         btn.classList.add('active');
         document.getElementById('songSearch').value = '';
         filterSongs();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // חיפוש שירים
     function filterSongs() {
         const query = document.getElementById('songSearch').value.toLowerCase();
         const activeGrid = document.querySelector('.stream-grid.active');
@@ -159,51 +149,47 @@
         });
     }
 
-    // טעינת נגן יוטיוב בלחיצה
     function loadVideo(container, videoUrl) {
-        container.innerHTML = `<iframe src="${videoUrl}${videoUrl.includes('?') ? '&' : '?'}autoplay=1" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+        container.innerHTML = `<iframe src="${videoUrl}${videoUrl.includes('?') ? '&' : '?'}autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     }
 
-    // הפקת תמונה מקישור יוטיוב
     function getThumb(url) {
         const id = url.split('/embed/')[1]?.split('?')[0];
         return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
     }
 
-    // טעינת נתונים משני קבצי JSON
+    // פונקציית האיחוד המעודכנת
     async function initDashboard() {
         try {
             const version = Date.now();
-            
-            // טעינת שני הקבצים
             const [resAuto, resManual] = await Promise.all([
                 fetch(`streams.json?v=${version}`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
                 fetch(`manual_links.json?v=${version}`).then(r => r.ok ? r.json() : {}).catch(() => ({}))
             ]);
 
-            // איחוד נתונים
-            const allCategories = { ...resAuto, ...resManual };
+            const allKeys = new Set([...Object.keys(resAuto), ...Object.keys(resManual)]);
 
-            for (const [key, songs] of Object.entries(allCategories)) {
+            allKeys.forEach(key => {
                 const grid = document.getElementById(key);
-                if (!grid || !Array.isArray(songs)) continue;
+                if (!grid) return;
 
-                grid.innerHTML = songs.map(song => `
-                    <article class="video-card">
-                        <div class="video-container" onclick="loadVideo(this, '${song.url}')">
-                            <img src="${getThumb(song.url)}" alt="${song.title}" loading="lazy">
-                            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-size:45px; text-shadow: 0 0 10px rgba(0,0,0,0.5);">
-                                <i class="bi bi-play-circle-fill"></i>
+                const combined = [...(resManual[key] || []), ...(resAuto[key] || [])];
+
+                if (combined.length > 0) {
+                    grid.innerHTML = combined.map(song => `
+                        <article class="video-card">
+                            <div class="video-container" onclick="loadVideo(this, '${song.url}')">
+                                <img src="${getThumb(song.url)}" alt="${song.title}">
+                                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-size:40px;"><i class="bi bi-play-circle-fill"></i></div>
                             </div>
-                        </div>
-                        <h3 class="video-title">${song.title}</h3>
-                    </article>
-                `).join('');
-            }
-        } catch (e) { console.error("Error initializing dashboard", e); }
+                            <h3 class="video-title">${song.title}</h3>
+                        </article>
+                    `).join('');
+                }
+            });
+        } catch (e) { console.error(e); }
     }
 
-    // תאריך עברי וגמטריה
     function getGematria(num) {
         const letters = {1000:'תתק',900:'תתק',800:'תת',700:'תש',600:'תר',500:'תק',400:'ת',300:'ש',200:'ר',100:'ק',90:'צ',80:'פ',70:'ע',60:'ס',50:'נ',40:'מ',30:'ל',20:'כ',10:'י',9:'ט',8:'ח',7:'ז',6:'ו',5:'ה',4:'ד',3:'ג',2:'ב',1:'א'};
         let str = ''; if (num >= 5000) num -= 5000;
