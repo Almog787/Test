@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NEMWLX7BF"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -59,7 +63,6 @@
             border-radius: 25px; padding: 10px 20px; border: 2px solid #ddd;
             width: 100%; outline: none; transition: 0.3s; text-align: center;
         }
-        .search-input:focus { border-color: var(--classics-color); box-shadow: 0 0 8px rgba(33, 150, 243, 0.2); }
 
         .stream-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px 0; }
         .stream-grid.active { display: grid; }
@@ -70,7 +73,7 @@
         }
 
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; background-color: #000; cursor: pointer; }
-        .video-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.3s; }
+        .video-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
         
         .play-button {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -99,7 +102,7 @@
     </div>
 </header>
 
-<nav class="category-bar" role="navigation">
+<nav class="category-bar">
     <div class="container d-flex">
         <button class="nav-btn btn-manual active" onclick="switchCat('manual_section', this)">
             <i class="bi bi-star-fill"></i> המבחר שלי
@@ -116,7 +119,7 @@
     <input type="text" id="songSearch" class="search-input" placeholder="חפשי שיר..." onkeyup="filterSongs()">
 </div>
 
-<main class="container py-4" role="main">
+<main class="container py-4" id="main-content">
     <div id="manual_section" class="stream-grid active"></div>
     <div id="purim" class="stream-grid"></div>
     <div id="morning_circle" class="stream-grid"></div>
@@ -125,7 +128,7 @@
     <div id="relaxation_sleep" class="stream-grid"></div>
 </main>
 
-<footer role="contentinfo">
+<footer>
     <div class="container text-center">
         <p class="m-0 text-muted">נבנה באהבה לגננות ישראל &copy; 2026</p>
         <p style="color: #555; font-weight: 600; margin: 0;">Developed by Almog787</p>
@@ -145,6 +148,7 @@
     function filterSongs() {
         const query = document.getElementById('songSearch').value.toLowerCase();
         const activeGrid = document.querySelector('.stream-grid.active');
+        if (!activeGrid) return;
         const cards = activeGrid.querySelectorAll('.video-card');
         cards.forEach(card => {
             const title = card.querySelector('.video-title').innerText.toLowerCase();
@@ -163,11 +167,14 @@
 
     async function initDashboard() {
         try {
-            const resAuto = await fetch('streams.json?v=' + Date.now());
+            // הוספת גרסה דינמית לקבצים כדי למנוע טעינה מהמטמון הישן
+            const version = Date.now();
+            const resAuto = await fetch(`streams.json?v=${version}`);
             const dataAuto = await resAuto.json();
+            
             let dataManual = { my_links: [] };
             try {
-                const resManual = await fetch('manual_links.json?v=' + Date.now());
+                const resManual = await fetch(`manual_links.json?v=${version}`);
                 if (resManual.ok) dataManual = await resManual.json();
             } catch (e) {}
 
