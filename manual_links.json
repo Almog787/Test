@@ -2,11 +2,11 @@
   "my_links": [
     {
       "title": "שיר פתיחה מיוחד",
-      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+      "url": "https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0"
     },
     {
       "title": "הפעלה שבחרתי ידנית",
-      "url": "https://youtu.be/iFZzVq1XTv4?si=jrqSsQzGROqQjezt"
+      "url": "https://www.youtube.com/embed/iFZzVq1XTv4?rel=0"
     }
   ]
 }
