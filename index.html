@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>דשבורד גננות | המרכז המוזיקלי</title>
+    <title>דשבורד גננות | המרכז המוזיקלי המאוחד</title>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NEMWLX7BF"></script>
     <script>
@@ -19,48 +19,63 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
     <style>
-        :root { --bg-color: #f4f7f6; --red-accent: #d63031; --green-accent: #27ae60; }
-        body { background-color: var(--bg-color); font-family: 'Assistant', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-        header { background: #ffffff; box-shadow: 0 2px 15px rgba(0,0,0,0.03); padding: 1rem 0; }
+        :root {
+            --bg-color: #f4f7f6;
+            --red-accent: #d63031;
+            --green-accent: #27ae60;
+            --card-radius: 22px;
+        }
         
+        body { background-color: var(--bg-color); font-family: 'Assistant', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: #ffffff; box-shadow: 0 2px 15px rgba(0,0,0,0.03); padding: 1rem 0; position: sticky; top: 0; z-index: 1050; }
+        
+        /* כפתורי פעולה ב-Header */
         .btn-action {
-            padding: 8px 20px; border-radius: 50px; font-weight: 800; transition: 0.3s;
+            padding: 8px 18px; border-radius: 50px; font-weight: 800; transition: 0.3s;
             display: flex; align-items: center; gap: 8px; border: 2px solid; cursor: pointer;
+            font-size: 0.95rem;
         }
         .btn-prayer { background: #fff5f5; color: var(--red-accent); border-color: #fab1a0; }
         .btn-prayer:hover { background: var(--red-accent); color: white; }
         .btn-bless { background: #f0fff4; color: var(--green-accent); border-color: #2ecc71; }
         .btn-bless:hover { background: var(--green-accent); color: white; }
 
-        .time-badge { background: #f8f9fa; border-radius: 15px; padding: 8px 18px; border: 1px solid #eef2f5; text-align: center; min-width: 190px; }
-        #clock-time { color: #2c3e50; font-weight: 800; font-size: 1.3rem; line-height: 1.2; }
-        .date-text { color: #7f8c8d; font-size: 0.85rem; font-weight: 600; }
+        /* תאריך ושעה */
+        .time-badge { background: #f8f9fa; border-radius: 15px; padding: 5px 15px; border: 1px solid #eef2f5; text-align: center; min-width: 170px; }
+        #clock-time { color: #2c3e50; font-weight: 800; font-size: 1.2rem; line-height: 1.1; }
+        .date-text { color: #7f8c8d; font-size: 0.8rem; font-weight: 600; margin-top: 2px; }
 
-        .category-bar { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow-x: auto; white-space: nowrap; }
-        .nav-btn { border: none; background: #f1f3f5; color: #555; padding: 10px 24px; margin: 0 6px; border-radius: 50px; font-weight: 700; transition: 0.3s; cursor: pointer; }
-        .nav-btn.active { background: #2c3e50; color: white; transform: scale(1.05); }
-        
-        .stream-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px 0; }
+        /* סרגל קטגוריות */
+        .category-bar { background: #ffffff; padding: 12px 0; border-bottom: 1px solid #eee; overflow-x: auto; white-space: nowrap; }
+        .nav-btn { border: none; background: #f1f3f5; color: #555; padding: 8px 20px; margin: 0 5px; border-radius: 50px; font-weight: 700; transition: 0.3s; }
+        .nav-btn.active { background: #2c3e50; color: white; }
+
+        /* גריד שירים */
+        .stream-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px 0; }
         .stream-grid.active { display: grid; }
-        .video-card { background: white; border-radius: 22px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; }
+        .video-card { background: white; border-radius: var(--card-radius); overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: 0.3s; }
+        .video-card:hover { transform: translateY(-5px); }
         .video-container { position: relative; padding-bottom: 56.25%; background: #000; cursor: pointer; }
         .video-container img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; }
-        .video-title { padding: 15px; font-weight: 700; text-align: right; margin: 0; color: #2c3e50; }
+        .video-title { padding: 12px; font-weight: 700; text-align: right; font-size: 1rem; color: #2c3e50; margin: 0; }
 
-        /* Modal Design */
-        .prayer-section { border-bottom: 2px dashed #eee; padding-bottom: 20px; margin-bottom: 20px; }
+        /* עיצוב חלונית (Modal) */
+        .modal-content { border-radius: 30px; border: none; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        .prayer-section { border-bottom: 1px dashed #eee; padding-bottom: 20px; margin-bottom: 20px; }
         .prayer-section:last-child { border-bottom: none; }
-        .prayer-title { color: var(--red-accent); font-weight: 800; margin-bottom: 10px; font-size: 1.3rem; text-align: center; }
-        .bless-title { color: var(--green-accent); }
-        .prayer-text { font-size: 1.25rem; line-height: 1.7; color: #2d3436; font-weight: 600; text-align: center; white-space: pre-line; }
+        .prayer-title { color: var(--red-accent); font-weight: 800; font-size: 1.4rem; text-align: center; margin-bottom: 10px; }
+        .bless-title { color: var(--green-accent) !important; }
+        .prayer-text { font-size: 1.35rem; line-height: 1.8; color: #2d3436; font-weight: 600; text-align: center; white-space: pre-line; }
+
+        footer { background: white; padding: 20px; text-align: center; border-top: 1px solid #eee; margin-top: auto; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
         <div class="d-flex align-items-center gap-2">
-            <h1 class="m-0 fw-800 fs-4 text-dark ml-3">המרכז המוזיקלי</h1>
+            <h1 class="m-0 fw-800 fs-4 text-dark d-none d-md-block" style="margin-left: 15px !important;">המרכז המוזיקלי</h1>
             <button class="btn-action btn-prayer" onclick="openDynamicModal('prayers')">
                 <i class="bi bi-heart-fill"></i> תפילות
             </button>
@@ -70,15 +85,31 @@
         </div>
         <div class="time-badge">
             <div id="clock-time">--:--</div>
-            <div id="date-hebrew" class="date-text">טוען...</div>
+            <div id="date-hebrew" class="date-text">טוען תאריך...</div>
             <div id="date-gregorian" class="date-text"></div>
         </div>
     </div>
 </header>
 
+<nav class="category-bar">
+    <div class="container d-flex">
+        <button class="nav-btn active" onclick="switchCat('manual_section', this)">🏠 המבחר שלי</button>
+        <button class="nav-btn" onclick="switchCat('morning_circle', this)">☀️ מפגש בוקר</button>
+        <button class="nav-btn" onclick="switchCat('birthday', this)">🎂 יום הולדת</button>
+        <button class="nav-btn" onclick="switchCat('movement', this)">🏃 תנועה</button>
+    </div>
+</nav>
+
+<main class="container py-3 flex-grow-1">
+    <div id="manual_section" class="stream-grid active"></div>
+    <div id="morning_circle" class="stream-grid"></div>
+    <div id="birthday" class="stream-grid"></div>
+    <div id="movement" class="stream-grid"></div>
+</main>
+
 <div class="modal fade" id="dynamicModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content" style="border-radius: 30px; border: none;">
+    <div class="modal-content">
       <div class="modal-header border-0 px-4 pt-4">
         <h5 class="modal-title fw-800" id="modalHeaderTitle">טוען...</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -89,27 +120,15 @@
   </div>
 </div>
 
-<nav class="category-bar">
-    <div class="container d-flex">
-        <button class="nav-btn active" onclick="switchCat('manual_section', this)">🏠 המבחר שלי</button>
-        <button class="nav-btn" onclick="switchCat('birthday', this)">🎂 יום הולדת</button>
-        <button class="nav-btn" onclick="switchCat('morning_circle', this)">☀️ בוקר</button>
-        <button class="nav-btn" onclick="switchCat('movement_play', this)">🏃 תנועה</button>
-    </div>
-</nav>
-
-<main class="container py-4 flex-grow-1">
-    <div id="manual_section" class="stream-grid active"></div>
-    <div id="birthday" class="stream-grid"></div>
-    <div id="morning_circle" class="stream-grid"></div>
-    <div id="movement_play" class="stream-grid"></div>
-</main>
+<footer>
+    <p class="m-0 text-muted fw-bold">נבנה באהבה לגננות &copy; 2026</p>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    let contentData = {};
+    let jsonData = {};
 
-    // --- תאריך עברי בגימטריה ---
+    // --- לוגיקת תאריך עברי (גימטריה) ---
     function getGematria(num) {
         if (num <= 0) return '';
         let str = '';
@@ -139,53 +158,60 @@
         } catch(e) {}
     }
 
-    // --- טעינת נתונים ודינמיקה ---
-    async function initData() {
+    // --- טעינת תוכן ---
+    async function loadContent() {
         try {
             const res = await fetch(`prayers.json?v=${Date.now()}`);
-            contentData = await res.json();
+            jsonData = await res.json();
             
-            // טעינת שירים (דוגמה בסיסית)
-            const streamsRes = await fetch(`streams.json?v=${Date.now()}`).then(r => r.json()).catch(() => ({}));
-            const manualRes = await fetch(`manual_links.json?v=${Date.now()}`).then(r => r.json()).catch(() => ({}));
-            
-            ['manual_section', 'birthday', 'morning_circle', 'movement_play'].forEach(key => {
+            // טעינת שירים (דוגמה מטעינה מקבילה)
+            const [sAuto, sManual] = await Promise.all([
+                fetch(`streams.json?v=${Date.now()}`).then(r => r.json()).catch(() => ({})),
+                fetch(`manual_links.json?v=${Date.now()}`).then(r => r.json()).catch(() => ({}))
+            ]);
+
+            ['manual_section', 'morning_circle', 'birthday', 'movement'].forEach(key => {
                 const grid = document.getElementById(key);
                 if (!grid) return;
-                const songs = [...(manualRes[key] || []), ...(streamsRes[key] || [])];
-                grid.innerHTML = songs.map(song => `
+                const items = [...(sManual[key] || []), ...(sAuto[key] || [])];
+                grid.innerHTML = items.map(item => `
                     <div class="video-card">
-                        <div class="video-container" onclick="this.innerHTML='<iframe src=\'https://www.youtube.com/embed/${getYouTubeID(song.url)}?autoplay=1\' frameborder=\'0\' allow=\'autoplay\' style=\'position:absolute;top:0;left:0;width:100%;height:100%;\'></iframe>'">
-                            <img src="https://img.youtube.com/vi/${getYouTubeID(song.url)}/hqdefault.jpg">
+                        <div class="video-container" onclick="playVid(this, '${item.url || item.id}')">
+                            <img src="https://img.youtube.com/vi/${getVidId(item.url || item.id)}/hqdefault.jpg">
                         </div>
-                        <h3 class="video-title">${song.title}</h3>
+                        <h3 class="video-title">${item.title}</h3>
                     </div>
                 `).join('');
             });
-        } catch(e) { console.error(e); }
+        } catch(e) { console.error("Load error", e); }
+    }
+
+    function getVidId(url) {
+        const m = url?.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([^\?&"'>]+)/);
+        return m ? m[1] : '';
+    }
+
+    function playVid(el, url) {
+        const id = getVidId(url);
+        el.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allow="autoplay" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>`;
     }
 
     function openDynamicModal(type) {
-        const titleMap = { 'prayers': 'סדר תפילה', 'blessings': 'ברכות הנהנין' };
-        const colorClass = type === 'blessings' ? 'bless-title' : '';
-        
-        document.getElementById('modalHeaderTitle').innerText = titleMap[type];
         const body = document.getElementById('modal-body-content');
+        const headerTitle = document.getElementById('modalHeaderTitle');
+        const isBlessings = type === 'blessings';
         
-        if (contentData[type]) {
-            body.innerHTML = Object.values(contentData[type]).map(item => `
+        headerTitle.innerText = isBlessings ? 'ברכות הנהנין (אוכל)' : 'סדר תפילה';
+        
+        if (jsonData[type]) {
+            body.innerHTML = Object.values(jsonData[type]).map(item => `
                 <div class="prayer-section">
-                    <div class="prayer-title ${colorClass}">${item.title}</div>
+                    <div class="prayer-title ${isBlessings ? 'bless-title' : ''}">${item.title}</div>
                     <div class="prayer-text">${item.content}</div>
                 </div>
             `).join('');
             new bootstrap.Modal(document.getElementById('dynamicModal')).show();
         }
-    }
-
-    function getYouTubeID(url) {
-        const m = url?.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([^\?&"'>]+)/);
-        return m ? m[1] : '';
     }
 
     function switchCat(id, btn) {
@@ -197,7 +223,7 @@
 
     setInterval(updateDateTime, 1000);
     updateDateTime();
-    initData();
+    loadContent();
 </script>
 </body>
 </html>
