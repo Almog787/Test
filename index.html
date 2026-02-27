@@ -1,124 +1,108 @@
+
 <!DOCTYPE html>
+
 <html lang="he" dir="rtl">
 <head>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-    <!-- Google Analytics (Keep your original tags) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NEMWLX7BF"></script>
-    <script>
-      window.dataLayer = window.dataLayer ||[];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-8NEMWLX7BF');
-    </script>
-    <meta name="google-adsense-account" content="ca-pub-3359114283161345">
+code
+Code
+download
+content_copy
+expand_less
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NEMWLX7BF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8NEMWLX7BF');
+</script>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>דשבורד גננות | המרכז המוזיקלי המאוחד</title>
+<meta name="google-adsense-account" content="ca-pub-3359114283161345">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>דשבורד גננות | המרכז המוזיקלי המאוחד</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;500;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+    :root {
+        --purim-color: #9c27b0;
+        --morning-color: #ff9800;
+        --movement-color: #4caf50;
+        --birthday-color: #e91e63;
+        --manual-color: #e67e22;
+        --classics-color: #2196f3;
+        --relax-color: #607d8b;
+        --story-color: #795548;
+    }
     
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    body { background-color: #f0f2f5; font-family: 'Assistant', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
     
-    <style>
-        :root {
-            --purim-color: #9c27b0;
-            --morning-color: #ff9800;
-            --movement-color: #4caf50;
-            --birthday-color: #e91e63;
-            --manual-color: #8e44ad;
-            --classics-color: #2196f3;
-            --relax-color: #607d8b;
-            --story-color: #795548;
-            --bg-color: #f4f7f6;
-            --card-radius: 20px;
-        }
-        
-        body { background-color: var(--bg-color); font-family: 'Assistant', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-        
-        /* Header & Clock */
-        header { background: #ffffff; box-shadow: 0 2px 15px rgba(0,0,0,0.03); border: none !important; }
-        .dashboard-title { font-weight: 800; color: #2c3e50; font-size: 1.5rem; display: flex; align-items: center; gap: 8px; }
-        .dashboard-title i { color: #e74c3c; }
-        
-        .time-badge { background: #f8f9fa; border-radius: 12px; padding: 10px 15px; border: 1px solid #eef2f5; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .time-badge #clock-time { color: #2c3e50; font-weight: 800; font-size: 1.2rem; }
-        .time-badge .date-text { color: #7f8c8d; font-size: 0.8rem; font-weight: 600; }
+    .category-bar {
+        background: white; padding: 15px 0; position: sticky; top: 0;
+        z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;
+    }
 
-        /* Navigation */
-        .category-bar { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
-        .category-bar::-webkit-scrollbar { display: none; }
-        
-        .nav-btn {
-            border: none; background: #f1f3f5; color: #555; padding: 10px 22px; margin: 0 6px;
-            border-radius: 50px; font-weight: 700; font-size: 0.95rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
-        }
-        
-        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .btn-manual.active { background: var(--manual-color); color: white; box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3); }
-        .btn-birthday.active { background: var(--birthday-color); color: white; box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3); }
-        .btn-purim.active { background: var(--purim-color); color: white; box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3); }
-        .btn-morning.active { background: var(--morning-color); color: white; box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3); }
-        .btn-movement.active { background: var(--movement-color); color: white; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3); }
-        .btn-classics.active { background: var(--classics-color); color: white; box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3); }
-        .btn-relax.active { background: var(--relax-color); color: white; box-shadow: 0 4px 15px rgba(96, 125, 139, 0.3); }
-        .btn-story.active { background: var(--story-color); color: white; box-shadow: 0 4px 15px rgba(121, 85, 72, 0.3); }
+    .nav-btn {
+        border: none; background: none; padding: 10px 20px; margin: 0 5px;
+        border-radius: 12px; font-weight: 800; transition: 0.3s;
+        display: inline-flex; align-items: center; gap: 8px;
+    }
 
-        /* Search */
-        .search-container { max-width: 600px; margin: 25px auto 10px; padding: 0 15px; position: relative; }
-        .search-icon { position: absolute; right: 30px; top: 50%; transform: translateY(-50%); color: #adb5bd; font-size: 1.2rem; }
-        .search-input { border-radius: 50px; padding: 12px 20px 12px 45px; border: 2px solid #e9ecef; width: 100%; text-align: right; outline: none; font-size: 1rem; transition: 0.3s; background: white; }
-        .search-input:focus { border-color: #3498db; box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1); }
+    .btn-manual { color: var(--manual-color); border: 1px solid var(--manual-color); }
+    .btn-manual.active { background: var(--manual-color); color: white; }
+    .btn-birthday { color: var(--birthday-color); border: 1px solid var(--birthday-color); }
+    .btn-birthday.active { background: var(--birthday-color); color: white; }
+    .btn-purim { color: var(--purim-color); border: 1px solid var(--purim-color); }
+    .btn-purim.active { background: var(--purim-color); color: white; }
+    .btn-morning { color: var(--morning-color); border: 1px solid var(--morning-color); }
+    .btn-morning.active { background: var(--morning-color); color: white; }
+    .btn-movement { color: var(--movement-color); border: 1px solid var(--movement-color); }
+    .btn-movement.active { background: var(--movement-color); color: white; }
+    .btn-classics { color: var(--classics-color); border: 1px solid var(--classics-color); }
+    .btn-classics.active { background: var(--classics-color); color: white; }
+    .btn-relax { color: var(--relax-color); border: 1px solid var(--relax-color); }
+    .btn-relax.active { background: var(--relax-color); color: white; }
+    .btn-story { color: var(--story-color); border: 1px solid var(--story-color); }
+    .btn-story.active { background: var(--story-color); color: white; }
 
-        /* Video Grid & Cards */
-        .stream-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px 0; }
-        .stream-grid.active { display: grid; }
-        
-        .video-card { background: white; border-radius: var(--card-radius); overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.04); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
-        .video-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.08); }
-        
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; background-color: #000; cursor: pointer; overflow: hidden; }
-        .video-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .video-card:hover .video-container img { transform: scale(1.05); }
-        
-        /* Glassmorphism Play Button */
-        .glass-play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); border: 2px solid rgba(255,255,255,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 30px; padding-left: 5px; transition: 0.3s; z-index: 2; }
-        .video-container:hover .glass-play-btn { background: rgba(231, 76, 60, 0.9); border-color: transparent; transform: translate(-50%, -50%) scale(1.1); }
-        iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; border-radius: var(--card-radius) var(--card-radius) 0 0; }
+    .search-container { max-width: 500px; margin: 20px auto 0; padding: 0 15px; }
+    .search-input { border-radius: 25px; padding: 10px 20px; border: 2px solid #ddd; width: 100%; text-align: center; outline: none; }
 
-        .video-title { padding: 15px; font-weight: 700; font-size: 1rem; color: #2c3e50; line-height: 1.3; text-align: right; flex-grow: 1; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        /* Lesson Plan Section */
-        .lesson-btn-container { padding: 0 15px 15px; }
-        .btn-lesson { width: 100%; border: none; background: #f1f4f8; padding: 10px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; color: #34495e; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .btn-lesson:hover { background: #e2e8f0; color: #2980b9; }
-        
-        .lesson-plan-box { display: none; padding: 15px; background: #f0f7fb; color: #2c3e50; font-size: 0.95rem; border-top: 1px solid #e1eef6; border-radius: 0 0 var(--card-radius) var(--card-radius); line-height: 1.5; animation: slideDown 0.3s ease-out; }
-        .lesson-plan-box.show { display: block; }
-        .lesson-plan-box i { color: #f1c40f; font-size: 1.1rem; margin-left: 5px; }
+    .stream-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 20px 0; }
+    .stream-grid.active { display: grid; }
 
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .video-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 4px solid #ccc; position: relative; }
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; background-color: #000; cursor: pointer; }
+    .video-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    .video-title { padding: 12px; font-weight: 600; font-size: 0.95rem; height: 65px; display: flex; align-items: center; justify-content: center; text-align: center; border-bottom: 1px solid #eee; }
+    
+    .lesson-plan-box { padding: 10px; background: #fffde7; font-size: 0.85rem; border-top: 1px dashed #ffd54f; display: none; }
+    .lesson-plan-box.show { display: block; }
+    .btn-lesson { width: 100%; border: none; background: #f8f9fa; padding: 8px; font-size: 0.8rem; font-weight: bold; color: #666; transition: 0.2s; }
+    .btn-lesson:hover { background: #e9ecef; }
 
-        /* Empty State */
-        .empty-state { display: none; text-align: center; padding: 50px 20px; color: #7f8c8d; grid-column: 1 / -1; }
-        .empty-state i { font-size: 3rem; color: #bdc3c7; margin-bottom: 15px; }
-
-        footer { background: white; padding: 25px 0; margin-top: auto; border-top: 1px solid #eee; text-align: center; }
-    </style>
+    footer { background: white; padding: 20px 0; margin-top: auto; border-top: 1px solid #eee; text-align: center; }
+    #current-time-container { font-size: 0.9rem; line-height: 1.2; text-align: left; }
+    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+</style>
 </head>
 <body>
 
-<header class="py-3">
-    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-3">
-        <h1 class="dashboard-title m-0"><i class="bi bi-music-note-beamed"></i> המרכז המוזיקלי</h1>
-        <div class="time-badge">
-            <div id="clock-time"></div>
-            <div id="date-hebrew" class="date-text"></div>
-            <div id="date-gregorian" class="date-text"></div>
+<header class="bg-white py-3 border-bottom">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h2 class="m-0 fw-800 text-primary"><i class="bi bi-music-note-beamed"></i> דשבורד גננות</h2>
+        <div id="current-time-container" class="badge bg-light text-dark p-2 border">
+            <div id="clock-time" class="fw-bold fs-6"></div>
+            <div id="date-hebrew" style="font-size: 0.75rem; color: #666;"></div>
+            <div id="date-gregorian" style="font-size: 0.75rem; color: #666;"></div>
         </div>
     </div>
 </header>
@@ -126,22 +110,21 @@
 <nav class="category-bar">
     <div class="container d-flex">
         <button class="nav-btn btn-manual active" onclick="switchCat('manual_section', this)"><i class="bi bi-star-fill"></i> המבחר שלי</button>
-        <button class="nav-btn btn-birthday" onclick="switchCat('birthday', this)"><i class="bi bi-cake2-fill"></i> יום הולדת</button>
+        <button class="nav-btn btn-birthday" onclick="switchCat('birthday', this)"><i class="bi bi-cake2"></i> יום הולדת</button>
         <button class="nav-btn btn-purim" onclick="switchCat('purim', this)"><i class="bi bi-mask"></i> פורים</button>
-        <button class="nav-btn btn-morning" onclick="switchCat('morning_circle', this)"><i class="bi bi-brightness-high-fill"></i> מפגש בוקר</button>
+        <button class="nav-btn btn-morning" onclick="switchCat('morning_circle', this)"><i class="bi bi-sun"></i> מפגש בוקר</button>
         <button class="nav-btn btn-movement" onclick="switchCat('movement_play', this)"><i class="bi bi-person-walking"></i> תנועה</button>
-        <button class="nav-btn btn-classics" onclick="switchCat('israeli_classics', this)"><i class="bi bi-boombox-fill"></i> קלאסיקות</button>
-        <button class="nav-btn btn-relax" onclick="switchCat('relaxation_sleep', this)"><i class="bi bi-moon-stars-fill"></i> מנוחה</button>
-        <button class="nav-btn btn-story" onclick="switchCat('story_time', this)"><i class="bi bi-book-half"></i> שעת סיפור</button>
+        <button class="nav-btn btn-classics" onclick="switchCat('israeli_classics', this)"><i class="bi bi-flag"></i> שירי ילדות</button>
+        <button class="nav-btn btn-relax" onclick="switchCat('relaxation_sleep', this)"><i class="bi bi-moon-stars"></i> מנוחה</button>
+        <button class="nav-btn btn-story" onclick="switchCat('story_time', this)"><i class="bi bi-book"></i> שעת סיפור</button>
     </div>
 </nav>
 
 <div class="search-container">
-    <i class="bi bi-search search-icon"></i>
-    <input type="text" id="songSearch" class="search-input" placeholder="חפשי שיר או הפעלה..." onkeyup="filterSongs()">
+    <input type="text" id="songSearch" class="search-input" placeholder="חפשי שיר..." onkeyup="filterSongs()">
 </div>
 
-<main class="container py-4 flex-grow-1">
+<main class="container py-4">
     <div id="manual_section" class="stream-grid active"></div>
     <div id="birthday" class="stream-grid"></div>
     <div id="purim" class="stream-grid"></div>
@@ -153,23 +136,17 @@
 </main>
 
 <footer>
-    <p class="m-0 text-muted fw-bold">נבנה באהבה לגננות ישראל &copy; 2026</p>
-    <p style="color: #95a5a6; font-size: 0.85rem; margin-top: 5px;">Developed by Almog787</p>
+    <p class="m-0 text-muted">נבנה באהבה לגננות ישראל &copy; 2026</p>
+    <p style="color: #555; font-weight: 600; margin: 0;">Developed by Almog787</p>
 </footer>
 
 <script>
     function toggleLesson(btn) {
-        const box = btn.parentElement.nextElementSibling;
+        const box = btn.nextElementSibling;
         box.classList.toggle('show');
-        if(box.classList.contains('show')) {
-            btn.innerHTML = '<i class="bi bi-chevron-up"></i> סגור רעיון לפעילות';
-            btn.style.background = '#dbeafe';
-            btn.style.color = '#1e40af';
-        } else {
-            btn.innerHTML = '<i class="bi bi-lightbulb"></i> רעיון לפעילות';
-            btn.style.background = '#f1f4f8';
-            btn.style.color = '#34495e';
-        }
+        btn.innerHTML = box.classList.contains('show') ? 
+            '<i class="bi bi-chevron-up"></i> סגור מערך' : 
+            '<i class="bi bi-journal-text"></i> צפה במערך שיעור';
     }
 
     function switchCat(id, btn) {
@@ -186,65 +163,25 @@
         const query = document.getElementById('songSearch').value.toLowerCase();
         const activeGrid = document.querySelector('.stream-grid.active');
         if (!activeGrid) return;
-        
-        let hasVisibleCards = false;
         activeGrid.querySelectorAll('.video-card').forEach(card => {
             const title = card.querySelector('.video-title').innerText.toLowerCase();
-            const lesson = card.querySelector('.lesson-plan-box') ? card.querySelector('.lesson-plan-box').innerText.toLowerCase() : '';
-            
-            if (title.includes(query) || lesson.includes(query)) {
-                card.style.display = "flex";
-                hasVisibleCards = true;
-            } else {
-                card.style.display = "none";
-            }
+            card.style.display = title.includes(query) ? "block" : "none";
         });
-
-        // טיפול במצב ריק (Empty state)
-        let emptyState = activeGrid.querySelector('.empty-state');
-        if (!hasVisibleCards) {
-            if (!emptyState) {
-                activeGrid.insertAdjacentHTML('beforeend', `
-                    <div class="empty-state">
-                        <i class="bi bi-search"></i>
-                        <h4>לא מצאנו תוצאות ל"${query}"</h4>
-                        <p>נסי לחפש במילים אחרות או בקטגוריה שונה.</p>
-                    </div>
-                `);
-            } else {
-                emptyState.style.display = 'block';
-                emptyState.querySelector('h4').innerText = `לא מצאנו תוצאות ל"${query}"`;
-            }
-        } else if (emptyState) {
-            emptyState.style.display = 'none';
-        }
-    }
-
-    // שליפת ID יוטיוב מכל סוגי הלינקים
-    function getYouTubeID(url) {
-        if (!url) return '';
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : '';
     }
 
     function loadVideo(container, videoUrl) {
-        const videoId = getYouTubeID(videoUrl);
-        if(videoId) {
-            // שימוש ב youtube-nocookie לפרטיות ובטיחות בגן
-            container.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-        }
+        container.innerHTML = `<iframe src="${videoUrl}${videoUrl.includes('?') ? '&' : '?'}autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     }
 
     function getThumb(url) {
-        const id = getYouTubeID(url);
-        return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : ''; // שינוי ל-hqdefault לאיכות טובה יותר
+        const id = url.split('/embed/')[1]?.split('?')[0];
+        return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
     }
 
     async function initDashboard() {
         try {
             const version = Date.now();
-            const[resAuto, resManual] = await Promise.all([
+            const [resAuto, resManual] = await Promise.all([
                 fetch(`streams.json?v=${version}`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
                 fetch(`manual_links.json?v=${version}`).then(r => r.ok ? r.json() : {}).catch(() => ({}))
             ]);
@@ -255,4 +192,60 @@
                 const grid = document.getElementById(key);
                 if (!grid) return;
 
-                const combined = [...(resManual[key] || []), ...(resAuto[key] ||
+                const combined = [...(resManual[key] || []), ...(resAuto[key] || [])];
+
+                if (combined.length > 0) {
+                    grid.innerHTML = combined.map(song => `
+                        <article class="video-card">
+                            <div class="video-container" onclick="loadVideo(this, '${song.url}')">
+                                <img src="${getThumb(song.url)}" alt="${song.title}">
+                                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-size:40px;"><i class="bi bi-play-circle-fill"></i></div>
+                            </div>
+                            <h3 class="video-title">${song.title}</h3>
+                            ${song.lesson_plan ? `
+                                <button class="btn-lesson" onclick="toggleLesson(this)">
+                                    <i class="bi bi-journal-text"></i> צפה במערך שיעור
+                                </button>
+                                <div class="lesson-plan-box">${song.lesson_plan}</div>
+                            ` : ''}
+                        </article>
+                    `).join('');
+                }
+            });
+        } catch (e) { console.error(e); }
+    }
+
+    function getGematria(num) {
+        const letters = {1000:'תתק',900:'תתק',800:'תת',700:'תש',600:'תר',500:'תק',400:'ת',300:'ש',200:'ר',100:'ק',90:'צ',80:'פ',70:'ע',60:'ס',50:'נ',40:'מ',30:'ל',20:'כ',10:'י',9:'ט',8:'ח',7:'ז',6:'ו',5:'ה',4:'ד',3:'ג',2:'ב',1:'א'};
+        let str = ''; if (num >= 5000) num -= 5000;
+        const keys = Object.keys(letters).sort((a,b)=>b-a);
+        for(let key of keys){
+            while(num>=key){
+                if(num===15){str+='טו';num=0;break;}
+                if(num===16){str+='טז';num=0;break;}
+                str+=letters[key]; num-=key;
+            }
+        }
+        return str.length === 1 ? str+"'" : str.slice(0,-1)+'"'+str.slice(-1);
+    }
+
+    function updateDateTime() {
+        const now = new Date();
+        document.getElementById('clock-time').innerText = now.toLocaleTimeString('he-IL');
+        document.getElementById('date-gregorian').innerText = now.toLocaleDateString('he-IL', {day:'numeric', month:'long', year:'numeric'});
+        try {
+            const heParts = new Intl.DateTimeFormat('he-IL-u-ca-hebrew', {day:'numeric', month:'long', year:'numeric'}).formatToParts(now);
+            const day = parseInt(heParts.find(p=>p.type==='day').value);
+            const month = heParts.find(p=>p.type==='month').value;
+            const year = parseInt(heParts.find(p=>p.type==='year').value);
+            document.getElementById('date-hebrew').innerText = `${getGematria(day)} ב${month} ${getGematria(year)}`;
+        } catch(e) {}
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+    initDashboard();
+</script>
+
+</body>
+</html>
