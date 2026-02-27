@@ -1,0 +1,40 @@
+name: Pending Content Update
+on:
+  repository_dispatch:
+    types: [update_data]
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create New Branch and Update JSON
+        env:
+          DATA: ${{ github.event.client_payload.data }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          # הגדרת שם ענף ייחודי לפי זמן
+          BRANCH_NAME="update-$(date +%s)"
+          git checkout -b $BRANCH_NAME
+          
+          # עדכון קובץ הנתונים
+          echo "$DATA" > manual_links.json
+          
+          # הגדרות משתמש גיט
+          git config --global user.name "Google Sheets Sync"
+          git config --global user.email "sheets-sync@github.com"
+          
+          git add manual_links.json
+          git commit -m "תוכן חדש מהגוגל שיטס - ממתין לאישור"
+          git push origin $BRANCH_NAME
+
+          # פתיחת ה-Pull Request (החלק ששולח לך התראה)
+          gh pr create \
+            --title "📝 עדכון תוכן חדש מגוגל שיטס" \
+            --body "התקבלו נתונים חדשים מהגיליון. אנא בדוק את השינויים ואשר לפרסום." \
+            --base main \
+            --head $BRANCH_NAME
