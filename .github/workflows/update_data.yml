@@ -15,24 +15,27 @@ jobs:
       - name: Create New Branch and Update JSON
         env:
           DATA: ${{ github.event.client_payload.data }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          # כאן התיקון: אנחנו משתמשים ב-Secret שהגדרת ומשייכים אותו ל-GH_TOKEN
+          GH_TOKEN: ${{ secrets.GH_TOKEN }} 
         run: |
-          # הגדרת שם ענף ייחודי לפי זמן
+          # 1. יצירת ענף חדש
           BRANCH_NAME="update-$(date +%s)"
           git checkout -b $BRANCH_NAME
           
-          # עדכון קובץ הנתונים
+          # 2. עדכון הקובץ
           echo "$DATA" > manual_links.json
           
-          # הגדרות משתמש גיט
+          # 3. הגדרות גיט (חובה כדי לעשות commit)
           git config --global user.name "Google Sheets Sync"
           git config --global user.email "sheets-sync@github.com"
           
+          # 4. ביצוע Commit ודחיפה של הענף
           git add manual_links.json
           git commit -m "תוכן חדש מהגוגל שיטס - ממתין לאישור"
           git push origin $BRANCH_NAME
 
-          # פתיחת ה-Pull Request (החלק ששולח לך התראה)
+          # 5. יצירת ה-Pull Request בעזרת ה-CLI
+          # ה-GH_TOKEN שהגדרנו למעלה מאפשר לפקודה הזו לעבוד
           gh pr create \
             --title "📝 עדכון תוכן חדש מגוגל שיטס" \
             --body "התקבלו נתונים חדשים מהגיליון. אנא בדוק את השינויים ואשר לפרסום." \
