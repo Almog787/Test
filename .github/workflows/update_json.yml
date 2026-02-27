@@ -1,25 +1,25 @@
-name: Update JSON Data
+name: Update Kindergarten Data
 on:
   repository_dispatch:
     types: [update_data]
 
 jobs:
-  update:
+  update-file:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Update JSON file
+      - name: Overwrite JSON File
         run: |
           echo '${{ github.event.client_payload.data }}' > manual_links.json
-          
-      - name: Commit and Push
+
+      - name: Commit and Push Changes
         run: |
           git config --global user.name "Admin Dashboard"
           git config --global user.email "admin@dashboard.com"
           git add manual_links.json
-          git commit -m "Update content from Admin UI"
+          git commit -m "Content updated via Admin UI [skip ci]"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
